@@ -1,0 +1,20 @@
+{
+  "name": "secure-password-generator",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker-based password generator with multiple presets",
+  "main": "src/worker.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "echo \"Tests not implemented yet\""
+  },
+  "keywords": ["password", "generator", "cloudflare", "worker", "security"],
+  "author": "Andras I. Szilasi <boldwelderwx@icloud.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.91.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
