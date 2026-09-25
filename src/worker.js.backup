@@ -1,0 +1,617 @@
+/**
+ * ============================================================
+ * Secure Password Database Generator - Main Worker Entry Point
+ * Version: 0.1.0-beta.1
+ * Author: Andras I. Szilasi <boldwelderwx@icloud.com>
+ * ============================================================
+ * 
+ * CLOUDFLARE WORKER BELÉPÉSI PONT
+ * 
+ * Ez a fő fájl, amit a Cloudflare Workers futtat.
+ * Minden HTTP kérés ide érkezik először.
+ * 
+ * ROUTE-OK:
+ *   GET /              - Üdvözlő oldal (HTML)
+ *   GET /health        - Egészség ellenőrzés (JSON)
+ *   GET /presets       - Összes preset listája (JSON)
+ *   GET /preset/:name  - CSV letöltés (streaming, gzip)
+ *   GET /info/:name    - Tanácsadás (text/plain)
+ *   GET /categories    - Kategóriák listája (JSON)
+ * 
+ * BIZTONSÁG:
+ *   - TLS 1.3 enforcement (Cloudflare alapból csinálja)
+ *   - Rate limiting (IP-alapú, egyszerű counter)
+ *   - Security header-ek (CORS, X-Frame-Options, stb.)
+ * 
+ * BŐVÍTÉS:
+ * Új route hozzáadásához adj hozzá egy új app.get() sort.
+ */
+
+import { Hono } from 'hono';
+import { getPreset, listPresets, getPresetsByCategory, getCategories, getPresetStats } from './presets.js';
+import { createCSVStream, generateFilename, generateMetadata } from './csvBuilder.js';
+import { buildAdvice, buildQuickAdvice, buildCategoryAdvice } from './advisor.js';
+
+// ============================================================
+// KONSTANSOK
+// ============================================================
+
+/** Worker verzió - fontos a verziókezelés miatt */
+const VERSION = '0.1.0-beta.1';
+
+/** Worker név (header-ekben jelenik meg) */
+const SERVICE_NAME = 'Secure Password Generator';
+
+/** Rate limiting konfiguráció */
+const RATE_LIMIT = {
+  WINDOW_MS: 60 * 1000,      // 1 perc
+  MAX_REQUESTS: 100,          // max 100 kérés percenként IP-nként
+  MAX_DOWNLOAD_REQUESTS: 10,  // max 10 letöltés percenként IP-nként
+};
+
+// ============================================================
+// RATE LIMITING (egyszerű in-memory megoldás)
+// ============================================================
+
+/**
+ * Egyszerű rate limiter Map-pel
+ * 
+ * FIGYELEM: Ez a megközelzés nem tökéletes Cloudflare Workers-nél,
+ * mert a Worker instance-ek elszigeteltek lehetnek.
+ * Produkciós használathoz ajánlott:
+ * - Cloudflare Rate Limiting szabályok (Dashboard-ban)
+ * - Cloudflare KV alapú rate limiter
+ * 
+ * Ez a megoldás alap védelemnek elég a BETA verzióhoz.
+ */
+const rateLimitMap = new Map();
+
+/**
+ * Rate limit ellenőrzés
+ * @param {string} key - IP cím vagy más azonosító
+ * @param {number} maxRequests - Max kérések száma
+ * @returns {boolean} true ha engedélyezett
+ */
+function checkRateLimit(key, maxRequests) {
+  const now = Date.now();
+  const entry = rateLimitMap.get(key);
+  
+  // Ha nincs bejegyzés vagy lejárt, újat hozunk létre
+  if (!entry || now - entry.windowStart > RATE_LIMIT.WINDOW_MS) {
+    rateLimitMap.set(key, {
+      windowStart: now,
+      count: 1,
+      downloadCount: key.includes('download') ? 1 : 0,
+    });
+    return true;
+  }
+  
+  // Ha letöltés, külön számláló
+  if (key.includes('download')) {
+    if (entry.downloadCount >= RATE_LIMIT.MAX_DOWNLOAD_REQUESTS) {
+      return false;
+    }
+    entry.downloadCount++;
+    entry.count++;
+    return true;
+  }
+  
+  // Normál kérés
+  if (entry.count >= maxRequests) {
+    return false;
+  }
+  entry.count++;
+  return true;
+}
+
+/**
+ * Régi bejegyzések takarítása (memória felszabadítás)
+ * Minden 5 percben fut
+ */
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, entry] of rateLimitMap.entries()) {
+    if (now - entry.windowStart > RATE_LIMIT.WINDOW_MS * 2) {
+      rateLimitMap.delete(key);
+    }
+  }
+}, 5 * 60 * 1000);
+
+// ============================================================
+// SEGÉDFÜGGVÉNYEK
+// ============================================================
+
+/**
+ * Biztonsági header-ek hozzáadása a válaszhoz
+ * @param {Response} response - Válasz objektum
+ * @returns {Response} Válasz biztonsági header-ekkel
+ */
+function addSecurityHeaders(response) {
+  const headers = new Headers(response.headers);
+  
+  // Alap biztonsági header-ek
+  headers.set('X-Content-Type-Options', 'nosniff');
+  headers.set('X-Frame-Options', 'DENY');
+  headers.set('X-XSS-Protection', '1; mode=block');
+  headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  
+  // Szolgáltatás azonosító header-ek
+  headers.set('X-Service-Name', SERVICE_NAME);
+  headers.set('X-Service-Version', VERSION);
+  
+  // TLS 1.3 jelzés (Cloudflare alapból enforcementálja, de jelezzük)
+  headers.set('X-TLS-Version', '1.3');
+  headers.set('X-TLS-Enforcement', 'strict');
+  
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
+/**
+ * JSON válasz generálása
+ * @param {Object} data - Válasz adat
+ * @param {number} status - HTTP státusz kód
+ * @param {Object} extraHeaders - Extra header-ek
+ * @returns {Response} JSON válasz
+ */
+function jsonResponse(data, status = 200, extraHeaders = {}) {
+  const response = new Response(JSON.stringify(data, null, 2), {
+    status,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      ...extraHeaders,
+    },
+  });
+  return addSecurityHeaders(response);
+}
+
+/**
+ * Hiba válasz generálása
+ * @param {string} message - Hibaüzenet
+ * @param {number} status - HTTP státusz kód
+ * @returns {Response} Hiba válasz
+ */
+function errorResponse(message, status = 400) {
+  return jsonResponse({
+    error: true,
+    message,
+    version: VERSION,
+    timestamp: new Date().toISOString(),
+  }, status);
+}
+
+/**
+ * Rate limit hiba válasz
+ * @returns {Response} 429 válasz
+ */
+function rateLimitResponse() {
+  return errorResponse(
+    'Rate limit exceeded. Please try again in 1 minute. ' +
+    'Rate limit: 100 requests/minute, 10 downloads/minute.',
+    429
+  );
+}
+
+// ============================================================
+// HONO APP LÉTREHOZÁSA
+// ============================================================
+
+const app = new Hono();
+
+// ============================================================
+// MIDDLEWARE-ek
+// ============================================================
+
+/**
+ * Rate limiting middleware
+ * Minden kérésre fut
+ */
+app.use('*', async (c, next) => {
+  const ip = c.req.header('CF-Connecting-IP') || 'unknown';
+  const path = c.req.path;
+  
+  // Letöltés kérések külön számlálóval
+  const key = path.startsWith('/preset/') ? `download:${ip}` : ip;
+  
+  if (!checkRateLimit(key, RATE_LIMIT.MAX_REQUESTS)) {
+    return c.json({
+      error: true,
+      message: 'Rate limit exceeded. Please try again in 1 minute.',
+      version: VERSION,
+    }, 429);
+  }
+  
+  await next();
+});
+
+/**
+ * Security headers middleware
+ * Minden válaszhoz hozzáadja a biztonsági header-eket
+ */
+app.use('*', async (c, next) => {
+  await next();
+  
+  // Biztonsági header-ek hozzáadása
+  const headers = new Headers(c.res.headers);
+  headers.set('X-Content-Type-Options', 'nosniff');
+  headers.set('X-Frame-Options', 'DENY');
+  headers.set('X-XSS-Protection', '1; mode=block');
+  headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  headers.set('X-Service-Name', SERVICE_NAME);
+  headers.set('X-Service-Version', VERSION);
+  headers.set('X-TLS-Version', '1.3');
+  
+  c.res = new Response(c.res.body, {
+    status: c.res.status,
+    statusText: c.res.statusText,
+    headers,
+  });
+});
+
+/**
+ * CORS middleware (minden origin engedélyezése BETA verzióban)
+ * Produkciós verzióban érdemes leszűkíteni
+ */
+app.use('*', async (c, next) => {
+  const origin = c.req.header('Origin');
+  if (origin) {
+    c.header('Access-Control-Allow-Origin', '*');
+    c.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    c.header('Access-Control-Allow-Headers', 'Content-Type');
+  }
+  await next();
+});
+
+// ============================================================
+// ROUTE-OK
+// ============================================================
+
+/**
+ * GET / - Üdvözlő oldal (HTML)
+ * Böngészőből elérhető információ
+ */
+app.get('/', (c) => {
+  const html = `
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${SERVICE_NAME} v${VERSION}</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f5f5f5;
+      color: #333;
+    }
+    .header {
+      background: #2c3e50;
+      color: white;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .endpoint {
+      background: #ecf0f1;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      font-family: monospace;
+    }
+    .beta {
+      background: #e74c3c;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    a { color: #3498db; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🔐 ${SERVICE_NAME}</h1>
+    <p>v${VERSION} <span class="beta">BETA</span></p>
+    <p>Nemzetközi jelszó-adatbázis generátor</p>
+    <p>Author: Andras I. Szilasi</p>
+  </div>
+  
+  <div class="card">
+    <h2>📥 Gyors kezdés</h2>
+    <p>Jelszó-adatbázis letöltése:</p>
+    <div class="endpoint">
+      curl --tlsv1.3 --compressed --progress-bar \
+        "https://passgen.boldwelderwx.workers.dev/preset/email-32-10k" \
+        -o passwords.csv
+    </div>
+    <p>Tanácsadás megtekintése:</p>
+    <div class="endpoint">
+      curl -s "https://passgen.boldwelderwx.workers.dev/info/email-32-10k"
+    </div>
+  </div>
+  
+  <div class="card">
+    <h2>📋 Elérhető endpointok</h2>
+    <div class="endpoint">GET /          - Ez az oldal</div>
+    <div class="endpoint">GET /health    - Egészség ellenőrzés (JSON)</div>
+    <div class="endpoint">GET /presets   - Összes preset listája (JSON)</div>
+    <div class="endpoint">GET /preset/:name - CSV letöltés (streaming, gzip)</div>
+    <div class="endpoint">GET /info/:name   - Tanácsadás (text/plain)</div>
+    <div class="endpoint">GET /categories   - Kategóriák listája (JSON)</div>
+  </div>
+  
+  <div class="card">
+    <h2>📚 Teljes dokumentáció</h2>
+    <p>
+      Látogassa meg a 
+      <a href="https://boldwelderwx.github.io/secure-passgen">
+        GitHub Pages dokumentációt
+      </a>
+      minden nyelvű útmutatóért és példákért.
+    </p>
+  </div>
+  
+  <div class="card">
+    <h2>🔒 Biztonság</h2>
+    <ul>
+      <li>TLS 1.3 enforcement (Cloudflare alapból)</li>
+      <li>Rate limiting: 100 kérés/perc, 10 letöltés/perc IP-nként</li>
+      <li>Nincs jelszó-tárolás (stateless, csak streaming)</li>
+      <li>Streaming CSV generálás (memória-hatékony)</li>
+    </ul>
+  </div>
+  
+  <div class="card" style="text-align: center; color: #666;">
+    <p>${SERVICE_NAME} v${VERSION} · Independent Analytic Cell</p>
+    <p>© 2026 Andras I. Szilasi · MIT License</p>
+  </div>
+</body>
+</html>
+  `;
+  
+  return c.html(html);
+});
+
+/**
+ * GET /health - Egészség ellenőrzés
+ * JSON formátumban adja vissza a rendszer állapotát
+ */
+app.get('/health', (c) => {
+  const stats = getPresetStats();
+  
+  return c.json({
+    status: 'healthy',
+    version: VERSION,
+    timestamp: new Date().toISOString(),
+    service: SERVICE_NAME,
+    presets: stats.total_presets,
+    categories: stats.category_list.length,
+    max_length: stats.max_length,
+    max_count: stats.max_count,
+    rate_limit: {
+      window_ms: RATE_LIMIT.WINDOW_MS,
+      max_requests: RATE_LIMIT.MAX_REQUESTS,
+      max_downloads: RATE_LIMIT.MAX_DOWNLOAD_REQUESTS,
+    },
+    features: {
+      tls_1_3: true,
+      streaming: true,
+      compression: true,
+      multi_language: false, // BETA: még nincs többnyelvű támogatás
+    },
+  });
+});
+
+/**
+ * GET /presets - Összes preset listája
+ * JSON formátumban adja vissza az összes elérhető presetet
+ */
+app.get('/presets', (c) => {
+  const presets = listPresets();
+  const categories = getCategories();
+  
+  return c.json({
+    version: VERSION,
+    timestamp: new Date().toISOString(),
+    total: presets.length,
+    categories: categories,
+    presets: presets,
+    usage_example: {
+      command: 'curl --tlsv1.3 --compressed "URL/preset/email-32-10k" -o passwords.csv',
+      info_command: 'curl -s "URL/info/email-32-10k"',
+    },
+  });
+});
+
+/**
+ * GET /categories - Kategóriák listája
+ * JSON formátumban adja vissza az összes kategóriát
+ */
+app.get('/categories', (c) => {
+  const categories = getCategories();
+  
+  const categoryInfo = categories.map(cat => ({
+    name: cat,
+    presets: getPresetsByCategory(cat).map(p => p.name),
+  }));
+  
+  return c.json({
+    version: VERSION,
+    timestamp: new Date().toISOString(),
+    total: categories.length,
+    categories: categoryInfo,
+  });
+});
+
+/**
+ * GET /preset/:name - CSV letöltés (streaming, gzip)
+ * 
+ * Ez a fő endpoint - a felhasználó ezzel tölti le a jelszó-adatbázist.
+ * 
+ * PÉLDA:
+ *   curl --tlsv1.3 --compressed --progress-bar \
+ *     "https://passgen.boldwelderwx.workers.dev/preset/email-32-10k" \
+ *     -o passwords.csv
+ * 
+ * FOLYAMAT:
+ * 1. Preset validálás
+ * 2. Streaming CSV generálás (memória-hatékony)
+ * 3. gzip tömörítés (Cloudflare automatikusan csinálja)
+ * 4. Válasz küldése chunk-onként
+ */
+app.get('/preset/:name', (c) => {
+  const presetName = c.req.param('name');
+  
+  // Preset validálás
+  const preset = getPreset(presetName);
+  
+  if (!preset) {
+    return c.json({
+      error: true,
+      message: `Preset not found: ${presetName}`,
+      available_presets: 'GET /presets for full list',
+      version: VERSION,
+    }, 404);
+  }
+  
+  // Streaming CSV generálás
+  const csvStream = createCSVStream(preset, presetName);
+  const filename = generateFilename(presetName);
+  const metadata = generateMetadata(preset, presetName, VERSION);
+  
+  // Válasz létrehozása streaming-mel
+  const response = new Response(csvStream, {
+    status: 200,
+    headers: {
+      'Content-Type': 'text/csv; charset=utf-8',
+      'Content-Disposition': `attachment; filename="${filename}"`,
+      // Cloudflare automatikusan tömörít, de explicit beállítjuk
+      // hogy a kliens tudja, mire számítson
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+      // Metadata header-ekben (későbbi feldolgozáshoz)
+      'X-Preset-Name': presetName,
+      'X-Preset-Length': String(preset.length),
+      'X-Preset-Count': String(preset.count),
+      'X-Preset-Charset': Array.isArray(preset.charset) 
+        ? preset.charset.join('+') 
+        : preset.charset,
+      'X-Generator-Version': VERSION,
+      'X-Generated-At': metadata.generated_at,
+    },
+  });
+  
+  return addSecurityHeaders(response);
+});
+
+/**
+ * GET /info/:name - Tanácsadás (text/plain)
+ * 
+ * Ez az endpoint adja vissza a formázott tanácsadást,
+ * amit a felhasználó a letöltés után lát a konzolban.
+ * 
+ * PÉLDA:
+ *   curl -s "https://passgen.boldwelderwx.workers.dev/info/email-32-10k"
+ * 
+ * HASZNÁLAT A FELHASZNÁLÓI OLDALON:
+ *   curl --tlsv1.3 --compressed "URL/preset/email-32-10k" -o passwords.csv \
+ *     && curl -s "URL/info/email-32-10k"
+ */
+app.get('/info/:name', (c) => {
+  const presetName = c.req.param('name');
+  
+  // Tanácsadás generálása
+  const baseUrl = new URL(c.req.url).origin;
+  const advice = buildAdvice(presetName, {
+    baseUrl,
+    version: VERSION,
+    lang: 'hu', // BETA: magyar, később többnyelvű
+  });
+  
+  return c.text(advice, 200, {
+    'Content-Type': 'text/plain; charset=utf-8',
+    'Cache-Control': 'no-cache',
+    'X-Generator-Version': VERSION,
+  });
+});
+
+/**
+ * OPTIONS kérések kezelése (CORS preflight)
+ */
+app.options('*', (c) => {
+  return c.text('', 204, {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  });
+});
+
+// ============================================================
+// 404 KEZELŐ
+// ============================================================
+
+/**
+ * Nem található route-ok kezelése
+ */
+app.notFound((c) => {
+  return c.json({
+    error: true,
+    message: 'Endpoint not found',
+    available_endpoints: [
+      'GET /          - Üdvözlő oldal (HTML)',
+      'GET /health    - Egészség ellenőrzés (JSON)',
+      'GET /presets   - Összes preset listája (JSON)',
+      'GET /preset/:name - CSV letöltés (streaming)',
+      'GET /info/:name   - Tanácsadás (text/plain)',
+      'GET /categories   - Kategóriák listája (JSON)',
+    ],
+    version: VERSION,
+  }, 404);
+});
+
+/**
+ * Hiba kezelő middleware
+ */
+app.onError((err, c) => {
+  console.error(`Error in worker: ${err.message}`, err.stack);
+  
+  return c.json({
+    error: true,
+    message: 'Internal server error',
+    detail: err.message, // BETA: fejlesztési fázisban mutatjuk a részleteket
+    version: VERSION,
+  }, 500);
+});
+
+// ============================================================
+// EXPORT
+// ============================================================
+
+/**
+ * Cloudflare Worker export
+ * 
+ * A Workers runtime ezt a fetch függvényt hívja minden kérésnél.
+ * 
+ * @param {Request} request - HTTP kérés
+ * @param {Object} env - Cloudflare environment (bindings)
+ * @param {Object} ctx - Execution context
+ * @returns {Promise<Response>} HTTP válasz
+ */
+export default {
+  fetch: app.fetch,
+};

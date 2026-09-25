@@ -1,0 +1,27 @@
+/**
+ * Ultra-egyszerű teszt worker
+ * Version: 0.1.0-beta.1-test
+ */
+
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    
+    // Egyszerű health check
+    if (url.pathname === '/health') {
+      return new Response(JSON.stringify({
+        status: 'ok',
+        message: 'Worker is running!',
+        timestamp: new Date().toISOString(),
+        version: '0.1.0-beta.1-test'
+      }, null, 2), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    
+    // Alapértelmezett válasz
+    return new Response('Secure Password Generator - Test Mode', {
+      headers: { 'Content-Type': 'text/plain' }
+    });
+  }
+};
