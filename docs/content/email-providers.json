@@ -1,0 +1,634 @@
+{
+  "title": "Email Provider Password Limits",
+  "title_hu": "Email Szolgáltatók Jelszó Korlátai",
+  "providers": [
+    {
+      "name": "Gmail (Google)",
+      "max": 100,
+      "recommended": 32,
+      "notes": "2FA mandatory, app passwords for devices"
+    },
+    {
+      "name": "Outlook / Hotmail",
+      "max": 128,
+      "recommended": 32,
+      "notes": "Microsoft account, supports FIDO2"
+    },
+    {
+      "name": "Yahoo Mail",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Generate app passwords"
+    },
+    {
+      "name": "ProtonMail",
+      "max": 64,
+      "recommended": 32,
+      "notes": "End-to-end encrypted, strong 2FA"
+    },
+    {
+      "name": "iCloud Mail",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Apple ID, hardware 2FA"
+    },
+    {
+      "name": "Tutanota",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Zero-knowledge encryption"
+    },
+    {
+      "name": "Fastmail",
+      "max": 128,
+      "recommended": 32,
+      "notes": "Privacy-focused"
+    },
+    {
+      "name": "GMX",
+      "max": 40,
+      "recommended": 32,
+      "notes": "European provider"
+    },
+    {
+      "name": "Zoho Mail",
+      "max": 100,
+      "recommended": 32,
+      "notes": "Business-friendly"
+    },
+    {
+      "name": "Mail.com",
+      "max": 40,
+      "recommended": 32,
+      "notes": "Multiple domain options"
+    },
+    {
+      "name": "AOL Mail",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Legacy, limited"
+    },
+    {
+      "name": "Yandex Mail",
+      "max": 50,
+      "recommended": 32,
+      "notes": "Russian provider"
+    },
+    {
+      "name": "Mail.ru",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Russian provider"
+    },
+    {
+      "name": "QQ Mail",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Chinese, numeric"
+    },
+    {
+      "name": "163.com",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Chinese provider"
+    },
+    {
+      "name": "Posteo",
+      "max": 64,
+      "recommended": 32,
+      "notes": "German privacy-focused"
+    },
+    {
+      "name": "Mailbox.org",
+      "max": 64,
+      "recommended": 32,
+      "notes": "German business"
+    },
+    {
+      "name": "Disroot Mail",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Privacy collective"
+    },
+    {
+      "name": "Cock.li",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Anonymity-focused"
+    },
+    {
+      "name": "AirMail",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Tor-friendly"
+    },
+    {
+      "name": "Elude.in",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Privacy email"
+    },
+    {
+      "name": "Riseup.net",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Activist-focused"
+    },
+    {
+      "name": "Autistici",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Italian activist collective"
+    },
+    {
+      "name": "Njalla",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Privacy, founded by Pirate Bay"
+    },
+    {
+      "name": "CTemplar",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Encrypted email"
+    },
+    {
+      "name": "StartMail",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Dutch privacy"
+    },
+    {
+      "name": "Hushmail",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Healthcare-focused"
+    },
+    {
+      "name": "Kolab Now",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Swiss-hosted"
+    },
+    {
+      "name": "Runbox",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Norwegian"
+    },
+    {
+      "name": "Migadu",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Swiss privacy"
+    },
+    {
+      "name": "Purelymail",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Unlimited storage"
+    },
+    {
+      "name": "Mailfence",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Belgian encrypted"
+    },
+    {
+      "name": "Infomaniak",
+      "max": 64,
+      "recommended": 32,
+      "notes": "Swiss eco"
+    },
+    {
+      "name": "Mailo",
+      "max": 32,
+      "recommended": 32,
+      "notes": "French"
+    },
+    {
+      "name": "LaPoste.net",
+      "max": 32,
+      "recommended": 32,
+      "notes": "French postal"
+    },
+    {
+      "name": "Orange.fr",
+      "max": 32,
+      "recommended": 32,
+      "notes": "French telco"
+    },
+    {
+      "name": "Free.fr",
+      "max": 32,
+      "recommended": 32,
+      "notes": "French ISP"
+    },
+    {
+      "name": "SFR Mail",
+      "max": 32,
+      "recommended": 32,
+      "notes": "French telco"
+    },
+    {
+      "name": "Bouygues",
+      "max": 32,
+      "recommended": 32,
+      "notes": "French telco"
+    },
+    {
+      "name": "T-Online",
+      "max": 32,
+      "recommended": 32,
+      "notes": "German Telekom"
+    },
+    {
+      "name": "Web.de",
+      "max": 40,
+      "recommended": 32,
+      "notes": "German"
+    },
+    {
+      "name": "gmx.de",
+      "max": 40,
+      "recommended": 32,
+      "notes": "German"
+    },
+    {
+      "name": "Freenet.de",
+      "max": 40,
+      "recommended": 32,
+      "notes": "German"
+    },
+    {
+      "name": "Virgilio",
+      "max": 20,
+      "recommended": 20,
+      "notes": "Italian"
+    },
+    {
+      "name": "Libero.it",
+      "max": 20,
+      "recommended": 20,
+      "notes": "Italian"
+    },
+    {
+      "name": "Tiscali",
+      "max": 20,
+      "recommended": 20,
+      "notes": "Italian"
+    },
+    {
+      "name": "Freemail.hu",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Hungarian"
+    },
+    {
+      "name": "Citromail.hu",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Hungarian"
+    },
+    {
+      "name": "Indamail.hu",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Hungarian"
+    },
+    {
+      "name": "UPC Mail (HU)",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Hungarian cable"
+    },
+    {
+      "name": "WP.pl",
+      "max": 20,
+      "recommended": 20,
+      "notes": "Polish"
+    },
+    {
+      "name": "O2.pl",
+      "max": 20,
+      "recommended": 20,
+      "notes": "Polish"
+    },
+    {
+      "name": "Interia.pl",
+      "max": 20,
+      "recommended": 20,
+      "notes": "Polish"
+    },
+    {
+      "name": "Poczta.onet.pl",
+      "max": 20,
+      "recommended": 20,
+      "notes": "Polish"
+    },
+    {
+      "name": "Gazeta.pl",
+      "max": 20,
+      "recommended": 20,
+      "notes": "Polish"
+    },
+    {
+      "name": "Seznam.cz",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Czech"
+    },
+    {
+      "name": "Centrum.cz",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Czech"
+    },
+    {
+      "name": "Atlas.cz",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Czech"
+    },
+    {
+      "name": "Rambler.ru",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Russian"
+    },
+    {
+      "name": "Inbox.ru",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Russian"
+    },
+    {
+      "name": "List.ru",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Russian"
+    },
+    {
+      "name": "BK.ru",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Russian"
+    },
+    {
+      "name": "Yahoo Japan",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Japanese"
+    },
+    {
+      "name": "Docomo.ne.jp",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Japanese mobile"
+    },
+    {
+      "name": "SoftBank Mail",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Japanese mobile"
+    },
+    {
+      "name": "au.com (KDDI)",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Japanese mobile"
+    },
+    {
+      "name": "Rakuten Mail",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Japanese"
+    },
+    {
+      "name": "Naver Mail",
+      "max": 20,
+      "recommended": 20,
+      "notes": "Korean"
+    },
+    {
+      "name": "Daum Mail",
+      "max": 20,
+      "recommended": 20,
+      "notes": "Korean"
+    },
+    {
+      "name": "Hanmail",
+      "max": 20,
+      "recommended": 20,
+      "notes": "Korean"
+    },
+    {
+      "name": "Rediffmail",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Indian"
+    },
+    {
+      "name": "Sify Mail",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Indian"
+    },
+    {
+      "name": "Zoho India",
+      "max": 100,
+      "recommended": 32,
+      "notes": "Indian Zoho"
+    },
+    {
+      "name": "UOL.com.br",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Brazilian"
+    },
+    {
+      "name": "BOL.com.br",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Brazilian"
+    },
+    {
+      "name": "Terra Mail",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Brazilian"
+    },
+    {
+      "name": "Globo.com",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Brazilian"
+    },
+    {
+      "name": "Telefonica",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Spanish"
+    },
+    {
+      "name": "Movistar",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Spanish"
+    },
+    {
+      "name": "Orange.es",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Spanish"
+    },
+    {
+      "name": "Vodafone.es",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Spanish"
+    },
+    {
+      "name": "Telstra (AU)",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Australian"
+    },
+    {
+      "name": "Bigpond",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Australian"
+    },
+    {
+      "name": "Shaw.ca",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Canadian"
+    },
+    {
+      "name": "Rogers.com",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Canadian"
+    },
+    {
+      "name": "Bell.net",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Canadian"
+    },
+    {
+      "name": "Comcast",
+      "max": 32,
+      "recommended": 32,
+      "notes": "American"
+    },
+    {
+      "name": "AT&T",
+      "max": 32,
+      "recommended": 32,
+      "notes": "American"
+    },
+    {
+      "name": "Verizon",
+      "max": 32,
+      "recommended": 32,
+      "notes": "American"
+    },
+    {
+      "name": "Spectrum",
+      "max": 32,
+      "recommended": 32,
+      "notes": "American"
+    },
+    {
+      "name": "Cox.net",
+      "max": 32,
+      "recommended": 32,
+      "notes": "American"
+    },
+    {
+      "name": "Earthlink",
+      "max": 32,
+      "recommended": 32,
+      "notes": "American"
+    },
+    {
+      "name": "AOL (legacy)",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Legacy"
+    },
+    {
+      "name": "Compuserve",
+      "max": 16,
+      "recommended": 16,
+      "notes": "Legacy"
+    },
+    {
+      "name": "Hotmail.co.uk",
+      "max": 128,
+      "recommended": 32,
+      "notes": "UK Microsoft"
+    },
+    {
+      "name": "BT Internet",
+      "max": 32,
+      "recommended": 32,
+      "notes": "British Telecom"
+    },
+    {
+      "name": "Virgin Media",
+      "max": 32,
+      "recommended": 32,
+      "notes": "UK cable"
+    },
+    {
+      "name": "Sky.com",
+      "max": 32,
+      "recommended": 32,
+      "notes": "UK satellite"
+    },
+    {
+      "name": "TalkTalk",
+      "max": 32,
+      "recommended": 32,
+      "notes": "UK ISP"
+    },
+    {
+      "name": "Plusnet",
+      "max": 32,
+      "recommended": 32,
+      "notes": "UK ISP"
+    },
+    {
+      "name": "Swisscom",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Swiss"
+    },
+    {
+      "name": "Bluewin.ch",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Swiss"
+    },
+    {
+      "name": "UPC Switzerland",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Swiss"
+    },
+    {
+      "name": "Sunrise.ch",
+      "max": 32,
+      "recommended": 32,
+      "notes": "Swiss"
+    }
+  ],
+  "boldwelder_advice": {
+    "en": "Always use the MAXIMUM allowed length. For Gmail use 32-100 chars. For older providers limited to 16, use full 16. Combine with 2FA where possible.",
+    "hu": "Mindig a MAXIMÁLIS megengedett hosszt használd. Gmail-hez 32-100 karakter. Régebbi szolgáltatóknál 16 korláttal használd a teljes 16-ot. Kombináld 2FA-val ahol lehet."
+  }
+}

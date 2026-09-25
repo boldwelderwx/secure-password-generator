@@ -1,0 +1,160 @@
+{
+  "title": "Complete Anonymity Guide - Tor, Proxychains, VPN",
+  "title_hu": "Teljes Anonimitási Útmutató - Tor, Proxychains, VPN",
+  "why_anonymous": {
+    "en": "When generating password databases, you may want complete anonymity. This guide shows how to use this tool without revealing your identity.",
+    "hu": "Jelszóadatbázisok generálásakor teljes anonimitást akarsz. Ez az útmutató megmutatja, hogyan használd ezt az eszközt személyazonosságod felfedése nélkül."
+  },
+  "levels": [
+    {
+      "level": 1,
+      "name": "Basic VPN",
+      "security": "Medium",
+      "use_case": "Everyday privacy",
+      "commands": [
+        "# Connect VPN first:",
+        "openvpn --config myvpn.ovpn",
+        "",
+        "# Then generate passwords:",
+        "curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/universal-standard-64-100k -o pw.csv"
+      ]
+    },
+    {
+      "level": 2,
+      "name": "Tor Network",
+      "security": "High",
+      "use_case": "Strong anonymity",
+      "commands": [
+        "# Install Tor:",
+        "sudo apt install tor torsocks",
+        "",
+        "# Start Tor service:",
+        "sudo systemctl start tor",
+        "",
+        "# Use torsocks wrapper:",
+        "torsocks curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/military-nato-256-10k -o pw.csv",
+        "",
+        "# Or use 'torify' alias:",
+        "torify curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/crypto-wallet-128-10k -o pw.csv"
+      ]
+    },
+    {
+      "level": 3,
+      "name": "Proxychains (chained proxies)",
+      "security": "Very High",
+      "use_case": "Advanced anonymity",
+      "commands": [
+        "# Install:",
+        "sudo apt install proxychains4",
+        "",
+        "# Edit config:",
+        "sudo nano /etc/proxychains.conf",
+        "# Add your proxies:",
+        "# socks5 127.0.0.1 9050    (Tor)",
+        "# socks4 192.168.1.1 1080  (custom)",
+        "",
+        "# Use:",
+        "proxychains4 curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/military-secret-512-50k -o pw.csv"
+      ]
+    },
+    {
+      "level": 4,
+      "name": "VPN + Tor (Maximum)",
+      "security": "Maximum",
+      "use_case": "Whistleblowers, high-risk",
+      "commands": [
+        "# 1. Connect VPN first:",
+        "openvpn --config myvpn.ovpn",
+        "",
+        "# 2. Then start Tor:",
+        "sudo systemctl start tor",
+        "",
+        "# 3. Use torsocks:",
+        "torsocks curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k -o pw.csv",
+        "",
+        "# Traffic path: You → VPN → Tor → Worker"
+      ]
+    },
+    {
+      "level": 5,
+      "name": "Whonix (Isolated VM)",
+      "security": "Maximum+",
+      "use_case": "Professional operations",
+      "commands": [
+        "# Install Whonix (VirtualBox or KVM):",
+        "# Download: whonix.org",
+        "",
+        "# In Whonix-Workstation (Tor pre-routed):",
+        "curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k -o pw.csv",
+        "",
+        "# All traffic automatically goes through Tor"
+      ]
+    },
+    {
+      "level": 6,
+      "name": "Tails OS (Live USB)",
+      "security": "Ultimate",
+      "use_case": "Edward Snowden level",
+      "commands": [
+        "# 1. Download Tails: tails.net",
+        "# 2. Boot from USB",
+        "# 3. All traffic forced through Tor",
+        "",
+        "# 4. Generate passwords:",
+        "curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k -o pw.csv",
+        "",
+        "# 5. Save to encrypted persistent storage"
+      ]
+    }
+  ],
+  "text_browsers": {
+    "title_en": "Terminal Web Browsers (for Tor anonymity)",
+    "title_hu": "Terminál Web Böngészők (Tor anonimitáshoz)",
+    "intro_en": "For maximum anonymity, use text-based browsers through Tor. No JavaScript, no tracking, no fingerprinting.",
+    "intro_hu": "Maximális anonimitáshoz használj szöveges böngészőket Tor-on keresztül. Nincs JavaScript, nincs követés, nincs ujjlenyomat.",
+    "browsers": [
+      {
+        "name": "w3m",
+        "install": "sudo apt install w3m",
+        "usage": "torsocks w3m https://secure-password-generator.boldwelderwx.workers.dev",
+        "features": "Tables, images (in terminals), tabs"
+      },
+      {
+        "name": "links2",
+        "install": "sudo apt install links2",
+        "usage": "torsocks links2 https://secure-password-generator.boldwelderwx.workers.dev",
+        "features": "Graphics mode available (links2 -g)"
+      },
+      {
+        "name": "lynx",
+        "install": "sudo apt install lynx",
+        "usage": "torsocks lynx https://secure-password-generator.boldwelderwx.workers.dev",
+        "features": "Oldest, most stable"
+      },
+      {
+        "name": "elinks",
+        "install": "sudo apt install elinks",
+        "usage": "torsocks elinks https://secure-password-generator.boldwelderwx.workers.dev",
+        "features": "Modern, mouse support"
+      }
+    ],
+    "full_workflow_en": "Complete anonymous workflow:",
+    "full_workflow_hu": "Teljes anonim workflow:",
+    "workflow_commands": [
+      "# 1. Start Tor:",
+      "sudo systemctl start tor",
+      "",
+      "# 2. Browse anonymously in terminal:",
+      "torsocks w3m https://secure-password-generator.boldwelderwx.workers.dev",
+      "",
+      "# 3. Navigate to presets, copy the curl command",
+      "",
+      "# 4. Generate passwords anonymously:",
+      "torsocks curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/military-nato-256-10k -o pw.csv",
+      "",
+      "# 5. Encrypt immediately:",
+      "gpg -c pw.csv",
+      "shred -u pw.csv  # Secure delete plaintext"
+    ]
+  }
+}

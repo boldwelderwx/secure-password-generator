@@ -1,0 +1,94 @@
+{
+  "title": "Kyber Post-Quantum Encryption",
+  "title_hu": "Kyber Poszt-Kvantum Titkosítás",
+  "intro": {
+    "en": "Kyber (now ML-KEM) is the NIST-standardized post-quantum key encapsulation mechanism. It protects against future quantum computers that could break RSA/ECC.",
+    "hu": "A Kyber (most ML-KEM) a NIST szabványosított poszt-kvantum kulcs-kapszulázási mechanizmus. Megvéd a jövőbeli kvantumszámítógépektől, amelyek feltörhetnék az RSA/ECC-t."
+  },
+  "why_kyber": [
+    {
+      "en": "NIST standard (FIPS 203)",
+      "hu": "NIST szabvány (FIPS 203)"
+    },
+    {
+      "en": "Quantum-resistant",
+      "hu": "Kvantum-ellenálló"
+    },
+    {
+      "en": "Fast and compact",
+      "hu": "Gyors és kompakt"
+    },
+    {
+      "en": "Already in TLS 1.3 hybrid mode",
+      "hu": "Már TLS 1.3 hibrid módban"
+    },
+    {
+      "en": "Used by Signal, Apple, Cloudflare",
+      "hu": "Signal, Apple, Cloudflare használja"
+    }
+  ],
+  "kyber_variants": [
+    {
+      "name": "Kyber-512",
+      "security": "AES-128 equivalent",
+      "use": "Fast, general purpose",
+      "pubkey": "800 bytes",
+      "privkey": "1632 bytes",
+      "ciphertext": "768 bytes"
+    },
+    {
+      "name": "Kyber-768",
+      "security": "AES-192 equivalent",
+      "use": "Recommended balance",
+      "pubkey": "1184 bytes",
+      "privkey": "2400 bytes",
+      "ciphertext": "1088 bytes"
+    },
+    {
+      "name": "Kyber-1024",
+      "security": "AES-256 equivalent",
+      "use": "Maximum security",
+      "pubkey": "1568 bytes",
+      "privkey": "3168 bytes",
+      "ciphertext": "1568 bytes"
+    }
+  ],
+  "examples": [
+    {
+      "tool": "liboqs (Open Quantum Safe)",
+      "install": "sudo apt install liboqs-dev  # or build from github.com/open-quantum-safe/liboqs",
+      "commands": [
+        "# Generate Kyber-768 keypair:",
+        "oqs-kem kyber768_keygen > kyber_keypair.txt",
+        "",
+        "# Encapsulate (Alice generates shared secret):",
+        "oqs-kem kyber768_encaps kyber_publickey.txt > ciphertext shared_secret",
+        "",
+        "# Decapsulate (Bob recovers shared secret):",
+        "oqs-kem kyber768_decaps kyber_privatekey.txt ciphertext > recovered_secret"
+      ]
+    },
+    {
+      "tool": "OpenSSL 3.0+ with Kyber Provider",
+      "commands": [
+        "# Install OQS provider:",
+        "git clone https://github.com/open-quantum-safe/oqs-provider",
+        "cd oqs-provider && cmake . && make && sudo make install",
+        "",
+        "# Use with OpenSSL:",
+        "openssl pkey -algorithm kyber768 -genkey -out kyber_priv.pem",
+        "openssl pkey -in kyber_priv.pem -pubout -out kyber_pub.pem",
+        "",
+        "# TLS with hybrid Kyber+X25519:",
+        "openssl s_client -connect example.com:443 \\",
+        "  -groups kyber768:x25519"
+      ]
+    },
+    {
+      "tool": "Cloudflare - Already Supports Kyber!",
+      "note_en": "This very Worker you're using supports Kyber in TLS handshake via Cloudflare's edge.",
+      "note_hu": "Ez a Worker amit használsz, már támogatja a Kyber-t a TLS handshake-ben a Cloudflare edge-én keresztül.",
+      "test": "curl -v https://cloudflare.com 2>&1 | grep -i kyber"
+    }
+  ]
+}

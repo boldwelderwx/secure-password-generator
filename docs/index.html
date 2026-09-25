@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Professional secure password database generator. 50+ presets, military-grade, Tor-compatible. Complete guides for OpenSSL, GPG, Kyber, public/private keys.">
+<title>Secure Password Generator | Professional Cryptographic Tool</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔐</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="lang-selector">
+  <button class="lang-btn" onclick="toggleLangMenu()"><span id="currentLang">🌐 EN</span> ▾</button>
+  <div class="lang-menu" id="langMenu">
+    <a href="#" data-lang="en">🇺🇸 English</a>
+    <a href="#" data-lang="hu">🇭🇺 Magyar</a>
+    <a href="#" data-lang="pl">🇵🇱 Polski</a>
+    <a href="#" data-lang="de">🇩🇪 Deutsch</a>
+    <a href="#" data-lang="ru">🇷🇺 Русский</a>
+    <a href="#" data-lang="ja">🇯🇵 日本語</a>
+    <a href="#" data-lang="es">🇪🇸 Español</a>
+    <a href="#" data-lang="fr">🇫🇷 Français</a>
+    <a href="#" data-lang="ar">🇸🇦 العربية</a>
+    <a href="#" data-lang="zh">🇨🇳 中文</a>
+  </div>
+</div>
+
+<button class="theme-toggle" onclick="toggleTheme()"><span id="themeIcon">🌙</span></button>
+
+<header class="hero">
+  <div class="container">
+    <div class="hero-badge" data-i18n="badge">⚡ Production Ready</div>
+    <h1 class="hero-title">
+      <span data-i18n="title_1">Secure Password</span>
+      <span class="gradient-text" data-i18n="title_2">Database Generator</span>
+    </h1>
+    <p class="hero-subtitle" data-i18n="subtitle">
+      Professional cryptographic tool for security researchers, penetration testers, and privacy advocates.
+      Generate millions of passwords, encrypt with Kyber, hide with steganography.
+    </p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-value">50+</div><div class="stat-label" data-i18n="stat_presets">Presets</div></div>
+      <div class="stat"><div class="stat-value">13</div><div class="stat-label" data-i18n="stat_categories">Categories</div></div>
+      <div class="stat"><div class="stat-value">4K</div><div class="stat-label" data-i18n="stat_maxlength">Max Length</div></div>
+      <div class="stat"><div class="stat-value">100+</div><div class="stat-label">Email Providers</div></div>
+    </div>
+    <div class="hero-cta">
+      <a href="#demo" class="btn btn-primary" data-i18n="cta_try">Try Live Demo</a>
+      <a href="#open-handling" class="btn btn-secondary">📖 Open Password Handling</a>
+      <a href="https://github.com/boldwelderwx/secure-password-generator" class="btn btn-ghost" target="_blank">⭐ GitHub</a>
+    </div>
+    <div class="hero-badges">
+      <span class="badge">🔒 TLS 1.3 + Kyber</span>
+      <span class="badge">🕵️ Tor Compatible</span>
+      <span class="badge">⚡ Cloudflare Workers</span>
+      <span class="badge">🌍 10 Languages</span>
+      <span class="badge">📚 100+ Email Providers</span>
+    </div>
+  </div>
+</header>
+
+<nav class="sticky-nav">
+  <div class="container">
+    <div class="nav-content">
+      <a href="#overview" class="nav-link">Overview</a>
+      <a href="#demo" class="nav-link">Demo</a>
+      <a href="#open-handling" class="nav-link">🆕 Open Handling</a>
+      <a href="#boldwelder" class="nav-link">💡 Boldwelder Tips</a>
+      <a href="#sarah-tim" class="nav-link">🔑 Public/Private</a>
+      <a href="#kyber" class="nav-link">🛡️ Kyber</a>
+      <a href="#presets" class="nav-link">Presets</a>
+      <a href="#email-providers" class="nav-link">📧 Email</a>
+      <a href="#crypto" class="nav-link">Crypto</a>
+      <a href="#steganography" class="nav-link">Steg</a>
+      <a href="#anonymity" class="nav-link">🕵️ Tor</a>
+      <a href="#text-browsers" class="nav-link">📟 Text Browsers</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container main-content">
+
+  <section id="overview" class="section">
+    <div class="section-header">
+      <h2>Why This Tool Exists</h2>
+      <p class="section-subtitle">A complete cryptographic toolkit for password management.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feature-icon">🎯</div><h3>On-the-Fly Generation</h3><p>Passwords never stored. Generated with Web Crypto API.</p></div>
+      <div class="feature-card"><div class="feature-icon">🏛️</div><h3>Military Standards</h3><p>Presets from NATO, CIA, governments worldwide.</p></div>
+      <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Kyber Post-Quantum</h3><p>Future-proof encryption ready for quantum era.</p></div>
+      <div class="feature-card"><div class="feature-icon">🕵️</div><h3>Tor + Proxychains</h3><p>Complete anonymity with Tails, Whonix support.</p></div>
+      <div class="feature-card"><div class="feature-icon">📧</div><h3>100+ Email Providers</h3><p>Know every provider's password limits.</p></div>
+      <div class="feature-card"><div class="feature-icon">📟</div><h3>Terminal Browsers</h3><p>Works with w3m, links, lynx, elinks.</p></div>
+    </div>
+  </section>
+
+  <section id="demo" class="section demo-section">
+    <div class="section-header"><h2>Live Demo</h2><p>Test directly in browser. No installation needed.</p></div>
+    <div class="demo-container">
+      <div class="demo-controls">
+        <div class="control-group">
+          <label>Preset</label>
+          <select id="demoPreset">
+            <option value="email-standard-32-10k">Email Standard (32, 10K)</option>
+            <option value="bank-standard-32-10k">Banking (32, 10K)</option>
+            <option value="military-nato-256-10k">NATO Military (256, 10K)</option>
+            <option value="gov-hu-32-10k">🇭🇺 Hungarian Gov (32, 10K)</option>
+            <option value="crypto-wallet-128-10k">Crypto Wallet (128, 10K)</option>
+            <option value="extreme-4096-100k">Extreme (4096, 100K)</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="runDemo()">Generate 10 Sample Passwords</button>
+      </div>
+      <div class="demo-output" id="demoOutput"><div class="demo-placeholder">Click "Generate" to see sample passwords...</div></div>
+    </div>
+  </section>
+
+  <section id="open-handling" class="section">
+    <div class="section-header">
+      <h2>🆕 Open Password Handling - Excel Cell Reference</h2>
+      <p class="section-subtitle">Revolutionary approach: reference passwords via Excel cell coordinates on your clothing</p>
+    </div>
+    <div id="openHandlingContent"></div>
+  </section>
+
+  <section id="boldwelder" class="section">
+    <div class="section-header">
+      <h2>💡 Boldwelder Recommendations - 4096 Character Passwords</h2>
+      <p class="section-subtitle">My personal best practices after years of security research</p>
+    </div>
+    <div id="boldwelderContent"></div>
+  </section>
+
+  <section id="sarah-tim" class="section">
+    <div class="section-header">
+      <h2>🔑 Sarah & Tim: Public/Private Key Story</h2>
+      <p class="section-subtitle">Learn public-key cryptography through a complete real-world example</p>
+    </div>
+    <div id="sarahTimContent"></div>
+  </section>
+
+  <section id="kyber" class="section">
+    <div class="section-header">
+      <h2>🛡️ Kyber Post-Quantum Encryption</h2>
+      <p class="section-subtitle">NIST FIPS 203 standard - quantum-resistant cryptography</p>
+    </div>
+    <div id="kyberContent"></div>
+  </section>
+
+  <section id="presets" class="section">
+    <div class="section-header"><h2>50+ Professional Presets</h2><p>Organized by use case.</p></div>
+    <div class="category-filter" id="categoryFilter"></div>
+    <div class="presets-grid" id="presetsGrid"></div>
+  </section>
+
+  <section id="email-providers" class="section">
+    <div class="section-header">
+      <h2>📧 100+ Email Provider Password Limits</h2>
+      <p class="section-subtitle">Know the exact password length limits for every major email provider</p>
+    </div>
+    <div id="emailProvidersContent"></div>
+  </section>
+
+  <section id="crypto" class="section">
+    <div class="section-header"><h2>Cryptography Tools & Guides</h2><p>OpenSSL, GPG, VeraCrypt, LUKS, age, pass</p></div>
+    <div class="tools-grid" id="cryptoGrid"></div>
+  </section>
+
+  <section id="steganography" class="section">
+    <div class="section-header"><h2>Steganography - Hidden in Plain Sight</h2><p>Hide databases in images, audio, video</p></div>
+    <div class="tools-grid" id="stegGrid"></div>
+  </section>
+
+  <section id="anonymity" class="section">
+    <div class="section-header">
+      <h2>🕵️ Complete Anonymity Stack</h2>
+      <p>Tor, Proxychains, VPN, Whonix, Tails - from basic to Snowden-level</p>
+    </div>
+    <div id="anonymityContent"></div>
+  </section>
+
+  <section id="text-browsers" class="section">
+    <div class="section-header">
+      <h2>📟 Terminal Browsers for Maximum Anonymity</h2>
+      <p>w3m, links2, lynx, elinks - no JavaScript, no tracking</p>
+    </div>
+    <div id="textBrowsersContent"></div>
+  </section>
+
+  <section id="install" class="section">
+    <div class="section-header"><h2>Installation</h2><p>No install needed - just curl!</p></div>
+    <div class="tabs">
+      <button class="tab active" data-tab="linux">🐧 Linux</button>
+      <button class="tab" data-tab="macos">🍎 macOS</button>
+      <button class="tab" data-tab="windows">🪟 Windows</button>
+    </div>
+    <div class="tab-content active" id="tab-linux">
+      <pre><code>curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/email-standard-32-10k -o passwords.csv</code></pre>
+    </div>
+    <div class="tab-content" id="tab-macos">
+      <pre><code>curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/bank-standard-32-10k -o passwords.csv</code></pre>
+    </div>
+    <div class="tab-content" id="tab-windows">
+      <pre><code>curl.exe --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/gov-standard-32-25k -o passwords.csv</code></pre>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><h4>🔐 Secure Password Generator</h4><p>Professional cryptographic tool.</p></div>
+      <div><h4>Resources</h4><ul><li><a href="https://github.com/boldwelderwx/secure-password-generator">GitHub</a></li><li><a href="#open-handling">Open Handling</a></li><li><a href="#kyber">Kyber Guide</a></li></ul></div>
+      <div><h4>Security</h4><ul><li><a href="#anonymity">Anonymity</a></li><li><a href="#crypto">Encryption</a></li><li><a href="#steganography">Steganography</a></li></ul></div>
+      <div><h4>Live Worker</h4><ul><li><a href="https://secure-password-generator.boldwelderwx.workers.dev">https://secure-password-generator.boldwelderwx.workers.dev</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Boldwelder Security. Built with ❤️ on Parrot OS.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/demo.js"></script>
+</body>
+</html>

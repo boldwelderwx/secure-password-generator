@@ -1,0 +1,139 @@
+{
+  "title": "Sarah & Tim: Public/Private Key Encryption Story",
+  "title_hu": "Sára és Tim: Publikus/Privát Kulcsos Titkosítás Története",
+  "story": {
+    "en": "Sarah wants to send a secret message to Tim. They've never met. How can they communicate securely over an insecure channel? Public-key cryptography solves this.",
+    "hu": "Sára titkos üzenetet akar küldeni Tim-nek. Soha nem találkoztak. Hogyan kommunikálhatnak biztonságosan nem biztonságos csatornán? A publikus-kulcsos kriptográfia megoldja."
+  },
+  "full_workflow": [
+    {
+      "step": 1,
+      "title_en": "Tim generates his keypair",
+      "title_hu": "Tim generálja a kulcspárját",
+      "commands": [
+        "# Tim generates RSA-4096 keypair:",
+        "openssl genpkey -algorithm RSA \\",
+        "  -pkeyopt rsa_keygen_bits:4096 \\",
+        "  -out tim_private.pem",
+        "",
+        "# Extract public key (shares with Sarah):",
+        "openssl pkey -in tim_private.pem -pubout -out tim_public.pem",
+        "",
+        "# Tim sends tim_public.pem to Sarah (even via email!)"
+      ]
+    },
+    {
+      "step": 2,
+      "title_en": "Sarah gets Tim's public key",
+      "title_hu": "Sára megkapja Tim publikus kulcsát",
+      "note_en": "Public keys can be shared openly. Even if intercepted, they can't decrypt messages.",
+      "note_hu": "A publikus kulcsok nyíltan megoszthatók. Még ha elfogják is, nem tudják velük dekódolni az üzeneteket."
+    },
+    {
+      "step": 3,
+      "title_en": "Sarah writes her secret message",
+      "title_hu": "Sára megírja a titkos üzenetét",
+      "commands": [
+        "echo 'Meet me at the cafe at 8pm. -Sarah' > secret.txt"
+      ]
+    },
+    {
+      "step": 4,
+      "title_en": "Sarah encrypts with Tim's public key",
+      "title_hu": "Sára titkosít Tim publikus kulcsával",
+      "commands": [
+        "openssl pkeyutl -encrypt \\",
+        "  -pubin -inkey tim_public.pem \\",
+        "  -in secret.txt \\",
+        "  -out secret.enc",
+        "",
+        "# Sarah sends secret.enc to Tim (email, chat, etc.)"
+      ]
+    },
+    {
+      "step": 5,
+      "title_en": "Tim decrypts with his private key",
+      "title_hu": "Tim dekódolja a privát kulcsával",
+      "commands": [
+        "openssl pkeyutl -decrypt \\",
+        "  -inkey tim_private.pem \\",
+        "  -in secret.enc \\",
+        "  -out decrypted.txt",
+        "",
+        "cat decrypted.txt"
+      ]
+    },
+    {
+      "step": 6,
+      "title_en": "For large files, use hybrid encryption",
+      "title_hu": "Nagy fájlokhoz használj hibrid titkosítást",
+      "commands": [
+        "# Generate random AES key:",
+        "openssl rand 32 > aes_key.bin",
+        "",
+        "# Encrypt large file with AES:",
+        "openssl enc -aes-256-cbc -salt -pbkdf2 \\",
+        "  -in bigfile.zip -out bigfile.enc \\",
+        "  -pass file:aes_key.bin",
+        "",
+        "# Encrypt AES key with Tim's public key:",
+        "openssl pkeyutl -encrypt \\",
+        "  -pubin -inkey tim_public.pem \\",
+        "  -in aes_key.bin \\",
+        "  -out aes_key.enc",
+        "",
+        "# Send both: bigfile.enc + aes_key.enc"
+      ]
+    }
+  ],
+  "openssl_algorithms": [
+    {
+      "name": "RSA-2048",
+      "security": "Good",
+      "use": "Legacy systems",
+      "note": "Being phased out"
+    },
+    {
+      "name": "RSA-4096",
+      "security": "Strong",
+      "use": "High security",
+      "note": "Boldwelder recommended"
+    },
+    {
+      "name": "Ed25519",
+      "security": "Strong",
+      "use": "Signatures, fast",
+      "note": "Modern, small keys"
+    },
+    {
+      "name": "X25519",
+      "security": "Strong",
+      "use": "Key exchange",
+      "note": "TLS 1.3 standard"
+    },
+    {
+      "name": "ECDSA P-256",
+      "security": "Strong",
+      "use": "Signatures",
+      "note": "NIST standard"
+    },
+    {
+      "name": "ECDSA P-384",
+      "security": "Very Strong",
+      "use": "High security signatures",
+      "note": "NSA Suite B"
+    },
+    {
+      "name": "Kyber-768",
+      "security": "Quantum-safe",
+      "use": "Future-proof key exchange",
+      "note": "NIST FIPS 203"
+    },
+    {
+      "name": "Kyber-1024",
+      "security": "Quantum-safe++",
+      "use": "Maximum quantum resistance",
+      "note": "Top secret level"
+    }
+  ]
+}

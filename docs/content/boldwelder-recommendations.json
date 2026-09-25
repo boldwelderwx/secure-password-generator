@@ -1,0 +1,114 @@
+{
+  "title": "Boldwelder Recommendations - 4096 Character Passwords",
+  "title_hu": "Boldwelder Ajánlások - 4096 Karakteres Jelszavak",
+  "philosophy": {
+    "en": "In my experience as a security researcher, 4096-character passwords with file-based key loading provide the highest practical security for personal and professional use. Here's why and how.",
+    "hu": "Biztonságkutatói tapasztalataim szerint a 4096 karakteres jelszavak fájl-alapú kulcs-betöltéssel a legmagasabb gyakorlati biztonságot nyújtják személyes és szakmai használatra. Íme miért és hogyan."
+  },
+  "why_4096": [
+    {
+      "en": "4096 bits = RSA key length standard",
+      "hu": "4096 bit = RSA kulcshossz szabvány"
+    },
+    {
+      "en": "Brute-force impossible with current technology",
+      "hu": "Brute-force lehetetlen jelenlegi technológiával"
+    },
+    {
+      "en": "Fits in memory easily",
+      "hu": "Könnyen elfér memóriában"
+    },
+    {
+      "en": "Easy to store in a text file",
+      "hu": "Könnyű szövegfájlban tárolni"
+    },
+    {
+      "en": "Can be generated in milliseconds",
+      "hu": "Ezredmásodpercek alatt generálható"
+    }
+  ],
+  "openssl_passfile_examples": [
+    {
+      "tool": "OpenSSL AES-256-CBC",
+      "description_en": "Encrypt file with 4096-char password from file",
+      "description_hu": "Fájl titkosítása 4096 karakteres jelszóval fájlból",
+      "commands": [
+        "# Generate 4096-char password file:",
+        "curl -s 'https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k' | head -2 | tail -1 > master.key",
+        "",
+        "# Encrypt a document:",
+        "openssl enc -aes-256-cbc -pbkdf2 -iter 1000000 \\",
+        "  -in secret.pdf -out secret.enc \\",
+        "  -pass file:master.key",
+        "",
+        "# Decrypt:",
+        "openssl enc -d -aes-256-cbc -pbkdf2 -iter 1000000 \\",
+        "  -in secret.enc -out secret.pdf \\",
+        "  -pass file:master.key"
+      ]
+    },
+    {
+      "tool": "OpenSSL with Salt",
+      "description_en": "Add random salt for extra security",
+      "description_hu": "Véletlen só hozzáadása extra biztonságért",
+      "commands": [
+        "openssl enc -aes-256-cbc -salt -pbkdf2 -iter 1000000 \\",
+        "  -in secret.pdf -out secret.enc \\",
+        "  -pass file:master.key"
+      ]
+    },
+    {
+      "tool": "GPG Symmetric",
+      "description_en": "Encrypt with GPG using password file",
+      "description_hu": "Titkosítás GPG-vel jelszófájl használatával",
+      "commands": [
+        "# Encrypt:",
+        "gpg --symmetric --cipher-algo AES256 \\",
+        "  --passphrase-file master.key \\",
+        "  --batch --yes \\",
+        "  -o secret.pdf.gpg secret.pdf",
+        "",
+        "# Decrypt:",
+        "gpg --decrypt \\",
+        "  --passphrase-file master.key \\",
+        "  --batch --yes \\",
+        "  -o secret.pdf secret.pdf.gpg"
+      ]
+    },
+    {
+      "tool": "LUKS Disk Encryption",
+      "description_en": "Full disk encryption with 4096-char passphrase",
+      "description_hu": "Teljes lemez titkosítás 4096 karakteres jelszóval",
+      "commands": [
+        "# Add keyfile to LUKS:",
+        "sudo cryptsetup luksAddKey /dev/sda1 master.key",
+        "",
+        "# Open with keyfile:",
+        "sudo cryptsetup luksOpen /dev/sda1 crypt \\",
+        "  --key-file master.key"
+      ]
+    }
+  ],
+  "best_practices": [
+    {
+      "en": "Generate a fresh 4096-char password monthly",
+      "hu": "Havonta generálj friss 4096 karakteres jelszót"
+    },
+    {
+      "en": "Store the keyfile on an encrypted USB drive",
+      "hu": "Tárold a kulcsfájlt titkosított USB meghajtón"
+    },
+    {
+      "en": "Never transmit the keyfile over network",
+      "hu": "Soha ne továbbítsd a kulcsfájlt hálózaton"
+    },
+    {
+      "en": "Use different keyfiles for different purposes",
+      "hu": "Használj különböző kulcsfájlokat különböző célokra"
+    },
+    {
+      "en": "Backup the keyfile in multiple secure locations",
+      "hu": "Mentsd a kulcsfájlt több biztonságos helyre"
+    }
+  ]
+}
