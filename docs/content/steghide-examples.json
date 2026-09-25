@@ -1,0 +1,125 @@
+{
+  "title": "Complete StegHide Guide",
+  "title_hu": "Teljes StegHide Útmutató",
+  "what_is": {
+    "en": "StegHide hides data inside image/audio files using LSB (Least Significant Bit) steganography. The hidden data is invisible to the naked eye.",
+    "hu": "A StegHide adatokat rejt el kép/hang fájlokba LSB (Legkevésbé Szignifikáns Bit) szteganográfia használatával. A rejtett adat szabad szemmel láthatatlan."
+  },
+  "install": [
+    "# Ubuntu/Debian/Parrot:",
+    "sudo apt install steghide",
+    "",
+    "# macOS:",
+    "brew install steghide",
+    "",
+    "# From source:",
+    "git clone https://github.com/StefanoDeVu662/steghide",
+    "cd steghide && ./configure && make && sudo make install"
+  ],
+  "basic_workflow": [
+    {
+      "step": 1,
+      "title": "Hide data in image",
+      "commands": [
+        "# Hide password database in JPEG:",
+        "steghide embed -cf cover.jpg -ef passwords.csv \\",
+        "  -p \"$(cat master.key)\" \\",
+        "  -sf stego.jpg",
+        "",
+        "# Parameters:",
+        "#   -cf = cover file (original image)",
+        "#   -ef = embed file (data to hide)",
+        "#   -p = passphrase (from file)",
+        "#   -sf = stego file (output)"
+      ]
+    },
+    {
+      "step": 2,
+      "title": "Extract hidden data",
+      "commands": [
+        "# Extract from stego image:",
+        "steghide extract -sf stego.jpg \\",
+        "  -p \"$(cat master.key)\" \\",
+        "  -xf recovered.csv",
+        "",
+        "# Verify:",
+        "diff passwords.csv recovered.csv"
+      ]
+    },
+    {
+      "step": 3,
+      "title": "Check capacity",
+      "commands": [
+        "# See how much data can be hidden:",
+        "steghide info cover.jpg",
+        "",
+        "# Output example:",
+        "#  \"cover.jpg\":",
+        "#    capacity: 45.2 KB",
+        "#    try to get information about embedded data ? (y/n)"
+      ]
+    }
+  ],
+  "advanced_examples": [
+    {
+      "name": "Hide encrypted database",
+      "description": "Double protection: encrypt then hide",
+      "commands": [
+        "# 1. Encrypt database:",
+        "openssl enc -aes-256-cbc -salt -pbkdf2 \\",
+        "  -in passwords.csv -out passwords.enc \\",
+        "  -pass file:master.key",
+        "",
+        "# 2. Hide encrypted file:",
+        "steghide embed -cf photo.jpg -ef passwords.enc \\",
+        "  -p \"$(cat master.key)\" -sf photo_stego.jpg"
+      ]
+    },
+    {
+      "name": "Hide in audio (WAV)",
+      "description": "Audio files have larger capacity",
+      "commands": [
+        "# Hide in WAV file:",
+        "steghide embed -cf song.wav -ef secret.txt \\",
+        "  -p \"passphrase\" -sf song_stego.wav",
+        "",
+        "# WAV capacity is typically larger than JPEG"
+      ]
+    },
+    {
+      "name": "Batch hiding",
+      "description": "Hide different data in multiple images",
+      "commands": [
+        "# Script to hide in multiple images:",
+        "for i in {1..10}; do",
+        "  steghide embed -cf cover_$i.jpg \\",
+        "    -ef db_$i.csv \\",
+        "    -p \"$(cat master.key)\" \\",
+        "    -sf stego_$i.jpg",
+        "done"
+      ]
+    }
+  ],
+  "tips": [
+    {
+      "en": "Use high-quality JPEG (quality 90+) for better hiding",
+      "hu": "Használj jó minőségű JPEG-et (90+ minőség) jobb rejtéshez"
+    },
+    {
+      "en": "Larger images = more capacity",
+      "hu": "Nagyobb képek = több kapacitás"
+    },
+    {
+      "en": "BMP files have maximum capacity but large file size",
+      "hu": "BMP fájloknak maximális kapacitásuk van, de nagy fájlméret"
+    },
+    {
+      "en": "Always verify extraction with checksum",
+      "hu": "Mindig ellenőrizd a kinyitást ellenőrzőösszeggel"
+    },
+    {
+      "en": "Combine with encryption for double protection",
+      "hu": "Kombináld titkosítással kettős védelemért"
+    }
+  ]
+}

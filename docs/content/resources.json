@@ -1,0 +1,236 @@
+{
+  "title": "Free Cryptography Resources Library",
+  "title_hu": "Ingyenes Titkosítási Forráskönyvtár",
+  "intro": {
+    "en": "Curated collection of 100+ free resources on cryptography, steganography, and security. All materials are legally downloadable and redistributable.",
+    "hu": "Válogatott gyűjtemény 100+ ingyenes forrásból titkosításról, szteganográfiáról és biztonságról. Minden anyag legálisan letölthető és továbbterjeszthető."
+  },
+  "categories": [
+    {
+      "name": "OpenSSL Documentation",
+      "resources": [
+        {
+          "title": "OpenSSL Cookbook (Free PDF)",
+          "url": "https://www.feistyduck.com/library/openssl-cookbook/",
+          "size": "2.5 MB",
+          "type": "PDF"
+        },
+        {
+          "title": "OpenSSL Manual Pages",
+          "url": "https://www.openssl.org/docs/manpages.html",
+          "size": "Online",
+          "type": "HTML"
+        },
+        {
+          "title": "OpenSSL Wiki",
+          "url": "https://wiki.openssl.org/",
+          "size": "Online",
+          "type": "HTML"
+        },
+        {
+          "title": "Bulletproof SSL and TLS",
+          "url": "https://www.feistyduck.com/library/bulletproof-ssl-and-tls/",
+          "size": "Free chapter",
+          "type": "PDF"
+        }
+      ]
+    },
+    {
+      "name": "Cryptography Books (Free/Legal)",
+      "resources": [
+        {
+          "title": "Handbook of Applied Cryptography",
+          "url": "http://cacr.uwaterloo.ca/hac/",
+          "size": "7 MB",
+          "type": "PDF"
+        },
+        {
+          "title": "Understanding Cryptography (Paar & Pelzl)",
+          "url": "https://www.crypto-textbook.com/",
+          "size": "Video lectures",
+          "type": "Video"
+        },
+        {
+          "title": "Cryptography Engineering (Schneier)",
+          "url": "https://www.schneier.com/books/cryptography-engineering/",
+          "size": "Sample chapters",
+          "type": "PDF"
+        },
+        {
+          "title": "Serious Cryptography (Aumasson)",
+          "url": "https://nostarch.com/seriouscrypto",
+          "size": "Sample chapter",
+          "type": "PDF"
+        },
+        {
+          "title": "A Graduate Course in Applied Cryptography",
+          "url": "https://toc.cryptobook.us/",
+          "size": "Free PDF",
+          "type": "PDF"
+        }
+      ]
+    },
+    {
+      "name": "Steganography Tools & Guides",
+      "resources": [
+        {
+          "title": "StegHide Documentation",
+          "url": "http://steghide.sourceforge.net/documentation/man.php",
+          "size": "Online",
+          "type": "HTML"
+        },
+        {
+          "title": "Steganography Guide (SANS)",
+          "url": "https://www.sans.org/white-papers/",
+          "size": "500 KB",
+          "type": "PDF"
+        },
+        {
+          "title": "OpenStego Manual",
+          "url": "https://www.openstego.com/",
+          "size": "Online",
+          "type": "HTML"
+        },
+        {
+          "title": "Outguess Source & Docs",
+          "url": "https://github.com/mayo-1216/outguess",
+          "size": "Source",
+          "type": "Code"
+        }
+      ]
+    },
+    {
+      "name": "GPG/PGP Resources",
+      "resources": [
+        {
+          "title": "GnuPG Manual",
+          "url": "https://www.gnupg.org/documentation/manuals/",
+          "size": "Online",
+          "type": "HTML"
+        },
+        {
+          "title": "OpenPGP Best Practices",
+          "url": "https://riseup.net/en/security/message-security/openpgp/best-practices",
+          "size": "Online",
+          "type": "HTML"
+        },
+        {
+          "title": "Email Self-Defense (FSF)",
+          "url": "https://emailselfdefense.fsf.org/",
+          "size": "Online",
+          "type": "HTML"
+        },
+        {
+          "title": "PGP Tutorial",
+          "url": "https://www.phildev.net/pgp/",
+          "size": "Online",
+          "type": "HTML"
+        }
+      ]
+    },
+    {
+      "name": "Tor & Anonymity",
+      "resources": [
+        {
+          "title": "Tor Project Documentation",
+          "url": "https://tb-manual.torproject.org/",
+          "size": "Online",
+          "type": "HTML"
+        },
+        {
+          "title": "Whonix Documentation",
+          "url": "https://www.whonix.org/wiki/Documentation",
+          "size": "Online",
+          "type": "HTML"
+        },
+        {
+          "title": "Tails Documentation",
+          "url": "https://tails.boum.org/doc/",
+          "size": "Online",
+          "type": "HTML"
+        },
+        {
+          "title": "Proxychains Documentation",
+          "url": "https://github.com/haad/proxychains",
+          "size": "README",
+          "type": "Code"
+        }
+      ]
+    },
+    {
+      "name": "Post-Quantum Cryptography",
+      "resources": [
+        {
+          "title": "NIST PQC Standardization",
+          "url": "https://csrc.nist.gov/projects/post-quantum-cryptography",
+          "size": "Online",
+          "type": "HTML"
+        },
+        {
+          "title": "liboqs Documentation",
+          "url": "https://github.com/open-quantum-safe/liboqs",
+          "size": "README",
+          "type": "Code"
+        },
+        {
+          "title": "Kyber Specification (FIPS 203)",
+          "url": "https://csrc.nist.gov/publications/detail/fips/203/final",
+          "size": "1.2 MB",
+          "type": "PDF"
+        },
+        {
+          "title": "oqs-provider for OpenSSL",
+          "url": "https://github.com/open-quantum-safe/oqs-provider",
+          "size": "Source",
+          "type": "Code"
+        }
+      ]
+    },
+    {
+      "name": "Password Security Research",
+      "resources": [
+        {
+          "title": "NIST SP 800-63B (Digital Identity)",
+          "url": "https://pages.nist.gov/800-63-3/sp800-63b.html",
+          "size": "Online",
+          "type": "HTML"
+        },
+        {
+          "title": "OWASP Password Cheat Sheet",
+          "url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+          "size": "Online",
+          "type": "HTML"
+        },
+        {
+          "title": "Have I Been Pwned API",
+          "url": "https://haveibeenpwned.com/API/v3",
+          "size": "API docs",
+          "type": "HTML"
+        }
+      ]
+    },
+    {
+      "name": "Linux Security",
+      "resources": [
+        {
+          "title": "LUKS Documentation",
+          "url": "https://gitlab.com/cryptsetup/cryptsetup",
+          "size": "Wiki",
+          "type": "HTML"
+        },
+        {
+          "title": "Arch Linux Security Wiki",
+          "url": "https://wiki.archlinux.org/title/Security",
+          "size": "Online",
+          "type": "HTML"
+        },
+        {
+          "title": "Debian Security Handbook",
+          "url": "https://www.debian.org/doc/manuals/securing-debian-manual/",
+          "size": "Online",
+          "type": "HTML"
+        }
+      ]
+    }
+  ]
+}
