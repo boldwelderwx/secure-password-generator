@@ -1,9 +1,9 @@
 {
-  "title": "Sarah & Tim: Public/Private Key Encryption Story",
-  "title_hu": "Sára és Tim: Publikus/Privát Kulcsos Titkosítás Története",
+  "title": "Sarah & Tim: Public/Private Key Story",
+  "title_hu": "Sára és Tim: Publikus/Privát Kulcs Történet",
   "story": {
-    "en": "Sarah wants to send a secret message to Tim. They've never met. How can they communicate securely over an insecure channel? Public-key cryptography solves this.",
-    "hu": "Sára titkos üzenetet akar küldeni Tim-nek. Soha nem találkoztak. Hogyan kommunikálhatnak biztonságosan nem biztonságos csatornán? A publikus-kulcsos kriptográfia megoldja."
+    "en": "Sarah wants to send a secret message to Tim. They've never met. Public-key cryptography makes this possible - even over insecure channels. Let's walk through the entire process with real OpenSSL commands.",
+    "hu": "Sára titkos üzenetet akar küldeni Tim-nek. Soha nem találkoztak. A publikus-kulcsos kriptográfia ezt lehetővé teszi - még nem biztonságos csatornákon is."
   },
   "full_workflow": [
     {
@@ -16,7 +16,7 @@
         "  -pkeyopt rsa_keygen_bits:4096 \\",
         "  -out tim_private.pem",
         "",
-        "# Extract public key (shares with Sarah):",
+        "# Extract public key (share with Sarah):",
         "openssl pkey -in tim_private.pem -pubout -out tim_public.pem",
         "",
         "# Tim sends tim_public.pem to Sarah (even via email!)"
@@ -27,7 +27,7 @@
       "title_en": "Sarah gets Tim's public key",
       "title_hu": "Sára megkapja Tim publikus kulcsát",
       "note_en": "Public keys can be shared openly. Even if intercepted, they can't decrypt messages.",
-      "note_hu": "A publikus kulcsok nyíltan megoszthatók. Még ha elfogják is, nem tudják velük dekódolni az üzeneteket."
+      "note_hu": "A publikus kulcsok nyíltan megoszthatók. Még ha elfogják is, nem tudják dekódolni."
     },
     {
       "step": 3,
@@ -45,9 +45,9 @@
         "openssl pkeyutl -encrypt \\",
         "  -pubin -inkey tim_public.pem \\",
         "  -in secret.txt \\",
-        "  -out secret.enc",
-        "",
-        "# Sarah sends secret.enc to Tim (email, chat, etc.)"
+        "  -out secret.enc \\",
+        "  -pkeyopt rsa_padding_mode:oaep \\",
+        "  -pkeyopt rsa_oaep_md:sha256"
       ]
     },
     {
@@ -58,20 +58,22 @@
         "openssl pkeyutl -decrypt \\",
         "  -inkey tim_private.pem \\",
         "  -in secret.enc \\",
-        "  -out decrypted.txt",
+        "  -out decrypted.txt \\",
+        "  -pkeyopt rsa_padding_mode:oaep \\",
+        "  -pkeyopt rsa_oaep_md:sha256",
         "",
         "cat decrypted.txt"
       ]
     },
     {
       "step": 6,
-      "title_en": "For large files, use hybrid encryption",
-      "title_hu": "Nagy fájlokhoz használj hibrid titkosítást",
+      "title_en": "Hybrid encryption for large files",
+      "title_hu": "Hibrid titkosítás nagy fájlokhoz",
       "commands": [
         "# Generate random AES key:",
         "openssl rand 32 > aes_key.bin",
         "",
-        "# Encrypt large file with AES:",
+        "# Encrypt large file with AES-256:",
         "openssl enc -aes-256-cbc -salt -pbkdf2 \\",
         "  -in bigfile.zip -out bigfile.enc \\",
         "  -pass file:aes_key.bin",
@@ -80,7 +82,8 @@
         "openssl pkeyutl -encrypt \\",
         "  -pubin -inkey tim_public.pem \\",
         "  -in aes_key.bin \\",
-        "  -out aes_key.enc",
+        "  -out aes_key.enc \\",
+        "  -pkeyopt rsa_padding_mode:oaep",
         "",
         "# Send both: bigfile.enc + aes_key.enc"
       ]
@@ -90,7 +93,7 @@
     {
       "name": "RSA-2048",
       "security": "Good",
-      "use": "Legacy systems",
+      "use": "Legacy",
       "note": "Being phased out"
     },
     {
@@ -102,8 +105,8 @@
     {
       "name": "Ed25519",
       "security": "Strong",
-      "use": "Signatures, fast",
-      "note": "Modern, small keys"
+      "use": "Signatures",
+      "note": "Modern, small"
     },
     {
       "name": "X25519",
@@ -120,20 +123,20 @@
     {
       "name": "ECDSA P-384",
       "security": "Very Strong",
-      "use": "High security signatures",
+      "use": "Signatures",
       "note": "NSA Suite B"
     },
     {
-      "name": "Kyber-768",
+      "name": "ML-KEM-768",
       "security": "Quantum-safe",
-      "use": "Future-proof key exchange",
+      "use": "Key exchange",
       "note": "NIST FIPS 203"
     },
     {
-      "name": "Kyber-1024",
+      "name": "ML-KEM-1024",
       "security": "Quantum-safe++",
-      "use": "Maximum quantum resistance",
-      "note": "Top secret level"
+      "use": "Top secret",
+      "note": "Max security"
     }
   ]
 }

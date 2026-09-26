@@ -1,35 +1,39 @@
 {
-  "title": "Kyber Post-Quantum Encryption",
-  "title_hu": "Kyber Poszt-Kvantum Titkosítás",
+  "title": "Kyber / ML-KEM Post-Quantum Encryption",
+  "title_hu": "Kyber / ML-KEM Poszt-Kvantum Titkosítás",
   "intro": {
-    "en": "Kyber (now ML-KEM) is the NIST-standardized post-quantum key encapsulation mechanism. It protects against future quantum computers that could break RSA/ECC.",
-    "hu": "A Kyber (most ML-KEM) a NIST szabványosított poszt-kvantum kulcs-kapszulázási mechanizmus. Megvéd a jövőbeli kvantumszámítógépektől, amelyek feltörhetnék az RSA/ECC-t."
+    "en": "ML-KEM (formerly Kyber) is the NIST FIPS 203 standard for post-quantum key encapsulation. As of April 2025, OpenSSL 3.5+ supports ML-KEM natively - no third-party provider needed! This protects against future quantum computers that could break RSA/ECC.",
+    "hu": "Az ML-KEM (korábban Kyber) a NIST FIPS 203 szabvány a poszt-kvantum kulcs-kapszulázáshoz. 2025 áprilisától az OpenSSL 3.5+ natívan támogatja az ML-KEM-et - nincs szükség harmadik fél provider-re! Megvéd a jövőbeli kvantumszámítógépektől, amelyek feltörhetnék az RSA/ECC-t."
   },
   "why_kyber": [
     {
-      "en": "NIST standard (FIPS 203)",
-      "hu": "NIST szabvány (FIPS 203)"
+      "en": "NIST FIPS 203 standard (official since 2024)",
+      "hu": "NIST FIPS 203 szabvány (hivatalos 2024 óta)"
     },
     {
-      "en": "Quantum-resistant",
-      "hu": "Kvantum-ellenálló"
+      "en": "Quantum-resistant (Shor's algorithm can't break it)",
+      "hu": "Kvantum-ellenálló (Shor algoritmusa nem töri fel)"
     },
     {
-      "en": "Fast and compact",
-      "hu": "Gyors és kompakt"
+      "en": "Fast and compact key sizes",
+      "hu": "Gyors és kompakt kulcsméretek"
     },
     {
-      "en": "Already in TLS 1.3 hybrid mode",
-      "hu": "Már TLS 1.3 hibrid módban"
+      "en": "Native in OpenSSL 3.5+ (April 2025)",
+      "hu": "Natív OpenSSL 3.5+-ban (2025 április)"
     },
     {
-      "en": "Used by Signal, Apple, Cloudflare",
-      "hu": "Signal, Apple, Cloudflare használja"
+      "en": "Already used by Signal, Apple, Cloudflare in hybrid TLS",
+      "hu": "Már használja Signal, Apple, Cloudflare hibrid TLS-ben"
+    },
+    {
+      "en": "Hybrid mode: X25519 + ML-KEM-768 (best of both worlds)",
+      "hu": "Hibrid mód: X25519 + ML-KEM-768 (mindkettő előnye)"
     }
   ],
   "kyber_variants": [
     {
-      "name": "Kyber-512",
+      "name": "ML-KEM-512 (Kyber-512)",
       "security": "AES-128 equivalent",
       "use": "Fast, general purpose",
       "pubkey": "800 bytes",
@@ -37,7 +41,7 @@
       "ciphertext": "768 bytes"
     },
     {
-      "name": "Kyber-768",
+      "name": "ML-KEM-768 (Kyber-768)",
       "security": "AES-192 equivalent",
       "use": "Recommended balance",
       "pubkey": "1184 bytes",
@@ -45,7 +49,7 @@
       "ciphertext": "1088 bytes"
     },
     {
-      "name": "Kyber-1024",
+      "name": "ML-KEM-1024 (Kyber-1024)",
       "security": "AES-256 equivalent",
       "use": "Maximum security",
       "pubkey": "1568 bytes",
@@ -55,40 +59,74 @@
   ],
   "examples": [
     {
-      "tool": "liboqs (Open Quantum Safe)",
-      "install": "sudo apt install liboqs-dev  # or build from github.com/open-quantum-safe/liboqs",
+      "tool": "OpenSSL 3.5+ (Native ML-KEM - Recommended!)",
+      "note_en": "OpenSSL 3.5 (released April 2025) ships ML-KEM natively. No oqs-provider needed!",
+      "note_hu": "Az OpenSSL 3.5 (2025 április) natívan tartalmazza az ML-KEM-et. Nem kell oqs-provider!",
       "commands": [
-        "# Generate Kyber-768 keypair:",
-        "oqs-kem kyber768_keygen > kyber_keypair.txt",
+        "# Check your OpenSSL version (need 3.5+):",
+        "openssl version",
         "",
-        "# Encapsulate (Alice generates shared secret):",
-        "oqs-kem kyber768_encaps kyber_publickey.txt > ciphertext shared_secret",
+        "# Generate ML-KEM-768 keypair (recommended):",
+        "openssl genpkey -algorithm ml-kem-768 -out mlkem768_priv.pem",
         "",
-        "# Decapsulate (Bob recovers shared secret):",
-        "oqs-kem kyber768_decaps kyber_privatekey.txt ciphertext > recovered_secret"
+        "# Extract public key (share with others):",
+        "openssl pkey -in mlkem768_priv.pem -pubout -out mlkem768_pub.pem",
+        "",
+        "# Encapsulate (Alice creates shared secret + ciphertext):",
+        "openssl pkeyutl -encapsulate -pubin -inkey mlkem768_pub.pem \\",
+        "  -out ciphertext.bin -out secret_alice.bin",
+        "",
+        "# Decapsulate (Bob recovers shared secret from ciphertext):",
+        "openssl pkeyutl -decapsulate -inkey mlkem768_priv.pem \\",
+        "  -in ciphertext.bin -out secret_bob.bin",
+        "",
+        "# Verify both secrets match:",
+        "diff secret_alice.bin secret_bob.bin && echo '✓ Match!'"
       ]
     },
     {
-      "tool": "OpenSSL 3.0+ with Kyber Provider",
+      "tool": "Hybrid TLS 1.3 (X25519 + ML-KEM-768)",
+      "note_en": "Best practice: use hybrid key exchange for both classical and quantum security.",
+      "note_hu": "Legjobb gyakorlat: használj hibrid kulcscserét klasszikus és kvantumbiztonságért.",
       "commands": [
-        "# Install OQS provider:",
-        "git clone https://github.com/open-quantum-safe/oqs-provider",
-        "cd oqs-provider && cmake . && make && sudo make install",
+        "# Connect to Cloudflare with hybrid post-quantum TLS:",
+        "openssl s_client -connect cloudflare.com:443 \\",
+        "  -groups x25519_mlkem768 -brief",
         "",
-        "# Use with OpenSSL:",
-        "openssl pkey -algorithm kyber768 -genkey -out kyber_priv.pem",
-        "openssl pkey -in kyber_priv.pem -pubout -out kyber_pub.pem",
-        "",
-        "# TLS with hybrid Kyber+X25519:",
-        "openssl s_client -connect example.com:443 \\",
-        "  -groups kyber768:x25519"
+        "# Test your own server with hybrid groups:",
+        "openssl s_client -connect yourserver.com:443 \\",
+        "  -groups x25519_mlkem768:p256_mlkem768 \\",
+        "  -brief -status"
       ]
     },
     {
-      "tool": "Cloudflare - Already Supports Kyber!",
-      "note_en": "This very Worker you're using supports Kyber in TLS handshake via Cloudflare's edge.",
-      "note_hu": "Ez a Worker amit használsz, már támogatja a Kyber-t a TLS handshake-ben a Cloudflare edge-én keresztül.",
-      "test": "curl -v https://cloudflare.com 2>&1 | grep -i kyber"
+      "tool": "Cloudflare - Native ML-KEM Support",
+      "note_en": "Cloudflare's edge supports post-quantum TLS by default! Your browser likely already negotiates ML-KEM when visiting this site.",
+      "note_hu": "A Cloudflare edge alapból támogatja a poszt-kvantum TLS-t! A böngésződ valószínűleg már ML-KEM-et használ amikor ezt az oldalt nézed.",
+      "commands": [
+        "# Test if Cloudflare offers ML-KEM:",
+        "curl -vI https://cloudflare.com 2>&1 | grep -i 'kyber\\|ml-kem'",
+        "",
+        "# Or use openssl to inspect the handshake:",
+        "openssl s_client -connect cloudflare.com:443 -brief 2>&1 | grep -i 'group\\|kyber\\|ml-kem'"
+      ]
+    },
+    {
+      "tool": "oqs-provider (For older OpenSSL 3.2-3.4)",
+      "install": "git clone https://github.com/open-quantum-safe/oqs-provider && cd oqs-provider && cmake . && make && sudo make install",
+      "note_en": "If you're on OpenSSL 3.2-3.4, you need the oqs-provider plugin.",
+      "note_hu": "Ha OpenSSL 3.2-3.4-et használsz, az oqs-provider plugin szükséges.",
+      "commands": [
+        "# Enable provider in openssl.cnf or via CLI:",
+        "export OPENSSL_MODULES=/usr/local/lib/ossl-modules",
+        "",
+        "# List available post-quantum algorithms:",
+        "openssl list -kem-algorithms -provider oqsprovider",
+        "",
+        "# Generate with provider:",
+        "openssl genpkey -provider oqsprovider \\",
+        "  -algorithm ml_kem_768 -out mlkem768.pem"
+      ]
     }
   ]
 }

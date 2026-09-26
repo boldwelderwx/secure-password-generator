@@ -12,7 +12,7 @@
       "name": "Outlook / Hotmail",
       "max": 128,
       "recommended": 32,
-      "notes": "Microsoft account, supports FIDO2"
+      "notes": "Microsoft account, FIDO2"
     },
     {
       "name": "Yahoo Mail",
@@ -24,7 +24,7 @@
       "name": "ProtonMail",
       "max": 64,
       "recommended": 32,
-      "notes": "End-to-end encrypted, strong 2FA"
+      "notes": "End-to-end encrypted"
     },
     {
       "name": "iCloud Mail",
@@ -36,7 +36,7 @@
       "name": "Tutanota",
       "max": 64,
       "recommended": 32,
-      "notes": "Zero-knowledge encryption"
+      "notes": "Zero-knowledge"
     },
     {
       "name": "Fastmail",
@@ -48,7 +48,7 @@
       "name": "GMX",
       "max": 40,
       "recommended": 32,
-      "notes": "European provider"
+      "notes": "European"
     },
     {
       "name": "Zoho Mail",
@@ -60,25 +60,19 @@
       "name": "Mail.com",
       "max": 40,
       "recommended": 32,
-      "notes": "Multiple domain options"
-    },
-    {
-      "name": "AOL Mail",
-      "max": 16,
-      "recommended": 16,
-      "notes": "Legacy, limited"
+      "notes": "Multiple domains"
     },
     {
       "name": "Yandex Mail",
       "max": 50,
       "recommended": 32,
-      "notes": "Russian provider"
+      "notes": "Russian"
     },
     {
       "name": "Mail.ru",
       "max": 32,
       "recommended": 32,
-      "notes": "Russian provider"
+      "notes": "Russian"
     },
     {
       "name": "QQ Mail",
@@ -90,13 +84,13 @@
       "name": "163.com",
       "max": 16,
       "recommended": 16,
-      "notes": "Chinese provider"
+      "notes": "Chinese"
     },
     {
       "name": "Posteo",
       "max": 64,
       "recommended": 32,
-      "notes": "German privacy-focused"
+      "notes": "German privacy"
     },
     {
       "name": "Mailbox.org",
@@ -105,7 +99,7 @@
       "notes": "German business"
     },
     {
-      "name": "Disroot Mail",
+      "name": "Disroot",
       "max": 64,
       "recommended": 32,
       "notes": "Privacy collective"
@@ -114,7 +108,7 @@
       "name": "Cock.li",
       "max": 64,
       "recommended": 32,
-      "notes": "Anonymity-focused"
+      "notes": "Anonymity"
     },
     {
       "name": "AirMail",
@@ -123,52 +117,46 @@
       "notes": "Tor-friendly"
     },
     {
-      "name": "Elude.in",
-      "max": 64,
-      "recommended": 32,
-      "notes": "Privacy email"
-    },
-    {
       "name": "Riseup.net",
       "max": 64,
       "recommended": 32,
-      "notes": "Activist-focused"
+      "notes": "Activist"
     },
     {
       "name": "Autistici",
       "max": 64,
       "recommended": 32,
-      "notes": "Italian activist collective"
+      "notes": "Italian collective"
     },
     {
       "name": "Njalla",
       "max": 64,
       "recommended": 32,
-      "notes": "Privacy, founded by Pirate Bay"
+      "notes": "Pirate Bay founders"
     },
     {
       "name": "CTemplar",
       "max": 64,
       "recommended": 32,
-      "notes": "Encrypted email"
+      "notes": "Encrypted"
     },
     {
       "name": "StartMail",
       "max": 64,
       "recommended": 32,
-      "notes": "Dutch privacy"
+      "notes": "Dutch"
     },
     {
       "name": "Hushmail",
       "max": 32,
       "recommended": 32,
-      "notes": "Healthcare-focused"
+      "notes": "Healthcare"
     },
     {
       "name": "Kolab Now",
       "max": 64,
       "recommended": 32,
-      "notes": "Swiss-hosted"
+      "notes": "Swiss"
     },
     {
       "name": "Runbox",
@@ -192,7 +180,7 @@
       "name": "Mailfence",
       "max": 64,
       "recommended": 32,
-      "notes": "Belgian encrypted"
+      "notes": "Belgian"
     },
     {
       "name": "Infomaniak",
@@ -231,12 +219,6 @@
       "notes": "French telco"
     },
     {
-      "name": "Bouygues",
-      "max": 32,
-      "recommended": 32,
-      "notes": "French telco"
-    },
-    {
       "name": "T-Online",
       "max": 32,
       "recommended": 32,
@@ -247,36 +229,6 @@
       "max": 40,
       "recommended": 32,
       "notes": "German"
-    },
-    {
-      "name": "gmx.de",
-      "max": 40,
-      "recommended": 32,
-      "notes": "German"
-    },
-    {
-      "name": "Freenet.de",
-      "max": 40,
-      "recommended": 32,
-      "notes": "German"
-    },
-    {
-      "name": "Virgilio",
-      "max": 20,
-      "recommended": 20,
-      "notes": "Italian"
-    },
-    {
-      "name": "Libero.it",
-      "max": 20,
-      "recommended": 20,
-      "notes": "Italian"
-    },
-    {
-      "name": "Tiscali",
-      "max": 20,
-      "recommended": 20,
-      "notes": "Italian"
     },
     {
       "name": "Freemail.hu",
@@ -300,7 +252,7 @@
       "name": "UPC Mail (HU)",
       "max": 32,
       "recommended": 32,
-      "notes": "Hungarian cable"
+      "notes": "Hungarian"
     },
     {
       "name": "WP.pl",
@@ -327,76 +279,16 @@
       "notes": "Polish"
     },
     {
-      "name": "Gazeta.pl",
-      "max": 20,
-      "recommended": 20,
-      "notes": "Polish"
-    },
-    {
       "name": "Seznam.cz",
       "max": 32,
       "recommended": 32,
       "notes": "Czech"
     },
     {
-      "name": "Centrum.cz",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Czech"
-    },
-    {
-      "name": "Atlas.cz",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Czech"
-    },
-    {
-      "name": "Rambler.ru",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Russian"
-    },
-    {
-      "name": "Inbox.ru",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Russian"
-    },
-    {
-      "name": "List.ru",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Russian"
-    },
-    {
-      "name": "BK.ru",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Russian"
-    },
-    {
       "name": "Yahoo Japan",
       "max": 32,
       "recommended": 32,
       "notes": "Japanese"
-    },
-    {
-      "name": "Docomo.ne.jp",
-      "max": 16,
-      "recommended": 16,
-      "notes": "Japanese mobile"
-    },
-    {
-      "name": "SoftBank Mail",
-      "max": 16,
-      "recommended": 16,
-      "notes": "Japanese mobile"
-    },
-    {
-      "name": "au.com (KDDI)",
-      "max": 16,
-      "recommended": 16,
-      "notes": "Japanese mobile"
     },
     {
       "name": "Rakuten Mail",
@@ -417,154 +309,10 @@
       "notes": "Korean"
     },
     {
-      "name": "Hanmail",
-      "max": 20,
-      "recommended": 20,
-      "notes": "Korean"
-    },
-    {
       "name": "Rediffmail",
       "max": 16,
       "recommended": 16,
       "notes": "Indian"
-    },
-    {
-      "name": "Sify Mail",
-      "max": 16,
-      "recommended": 16,
-      "notes": "Indian"
-    },
-    {
-      "name": "Zoho India",
-      "max": 100,
-      "recommended": 32,
-      "notes": "Indian Zoho"
-    },
-    {
-      "name": "UOL.com.br",
-      "max": 16,
-      "recommended": 16,
-      "notes": "Brazilian"
-    },
-    {
-      "name": "BOL.com.br",
-      "max": 16,
-      "recommended": 16,
-      "notes": "Brazilian"
-    },
-    {
-      "name": "Terra Mail",
-      "max": 16,
-      "recommended": 16,
-      "notes": "Brazilian"
-    },
-    {
-      "name": "Globo.com",
-      "max": 16,
-      "recommended": 16,
-      "notes": "Brazilian"
-    },
-    {
-      "name": "Telefonica",
-      "max": 16,
-      "recommended": 16,
-      "notes": "Spanish"
-    },
-    {
-      "name": "Movistar",
-      "max": 16,
-      "recommended": 16,
-      "notes": "Spanish"
-    },
-    {
-      "name": "Orange.es",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Spanish"
-    },
-    {
-      "name": "Vodafone.es",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Spanish"
-    },
-    {
-      "name": "Telstra (AU)",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Australian"
-    },
-    {
-      "name": "Bigpond",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Australian"
-    },
-    {
-      "name": "Shaw.ca",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Canadian"
-    },
-    {
-      "name": "Rogers.com",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Canadian"
-    },
-    {
-      "name": "Bell.net",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Canadian"
-    },
-    {
-      "name": "Comcast",
-      "max": 32,
-      "recommended": 32,
-      "notes": "American"
-    },
-    {
-      "name": "AT&T",
-      "max": 32,
-      "recommended": 32,
-      "notes": "American"
-    },
-    {
-      "name": "Verizon",
-      "max": 32,
-      "recommended": 32,
-      "notes": "American"
-    },
-    {
-      "name": "Spectrum",
-      "max": 32,
-      "recommended": 32,
-      "notes": "American"
-    },
-    {
-      "name": "Cox.net",
-      "max": 32,
-      "recommended": 32,
-      "notes": "American"
-    },
-    {
-      "name": "Earthlink",
-      "max": 32,
-      "recommended": 32,
-      "notes": "American"
-    },
-    {
-      "name": "AOL (legacy)",
-      "max": 16,
-      "recommended": 16,
-      "notes": "Legacy"
-    },
-    {
-      "name": "Compuserve",
-      "max": 16,
-      "recommended": 16,
-      "notes": "Legacy"
     },
     {
       "name": "Hotmail.co.uk",
@@ -579,30 +327,6 @@
       "notes": "British Telecom"
     },
     {
-      "name": "Virgin Media",
-      "max": 32,
-      "recommended": 32,
-      "notes": "UK cable"
-    },
-    {
-      "name": "Sky.com",
-      "max": 32,
-      "recommended": 32,
-      "notes": "UK satellite"
-    },
-    {
-      "name": "TalkTalk",
-      "max": 32,
-      "recommended": 32,
-      "notes": "UK ISP"
-    },
-    {
-      "name": "Plusnet",
-      "max": 32,
-      "recommended": 32,
-      "notes": "UK ISP"
-    },
-    {
       "name": "Swisscom",
       "max": 32,
       "recommended": 32,
@@ -613,22 +337,10 @@
       "max": 32,
       "recommended": 32,
       "notes": "Swiss"
-    },
-    {
-      "name": "UPC Switzerland",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Swiss"
-    },
-    {
-      "name": "Sunrise.ch",
-      "max": 32,
-      "recommended": 32,
-      "notes": "Swiss"
     }
   ],
   "boldwelder_advice": {
-    "en": "Always use the MAXIMUM allowed length. For Gmail use 32-100 chars. For older providers limited to 16, use full 16. Combine with 2FA where possible.",
-    "hu": "Mindig a MAXIMÁLIS megengedett hosszt használd. Gmail-hez 32-100 karakter. Régebbi szolgáltatóknál 16 korláttal használd a teljes 16-ot. Kombináld 2FA-val ahol lehet."
+    "en": "Always use the MAXIMUM allowed length. For Gmail use 32-100 chars. For older providers limited to 16, use the full 16. Combine with 2FA where possible.",
+    "hu": "Mindig a MAXIMÁLIS megengedett hosszt használd. Gmail-hez 32-100 karakter. Régebbi szolgáltatóknál 16 korláttal használd a teljes 16-ot. Kombináld 2FA-val."
   }
 }

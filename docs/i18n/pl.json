@@ -2,10 +2,20 @@
   "badge": "⚡ Gotowe",
   "title_1": "Bezpieczny",
   "title_2": "Generator Haseł",
-  "subtitle": "Profesjonalne narzędzie kryptograficzne.",
+  "subtitle": "Profesjonalne narzędzie kryptograficzne dla badaczy bezpieczeństwa.",
   "stat_presets": "Szablony",
   "stat_categories": "Kategorie",
   "stat_maxlength": "Max Długość",
+  "stat_languages": "Języki",
   "cta_try": "Demo",
-  "cta_install": "Instalacja"
+  "cta_beginner": "Poradnik",
+  "cta_github": "GitHub",
+  "demo_title": "🎯 Demo na Żywo",
+  "demo_subtitle": "Testuj w przeglądarce.",
+  "demo_preset": "Szablon",
+  "demo_generate": "Generuj 10 Haseł",
+  "demo_placeholder": "👆 Kliknij aby zobaczyć przykłady...",
+  "demo_info": "ℹ️ Łączy się z serwerem.",
+  "presets_title": "📦 50+ Szablonów",
+  "presets_subtitle": "Kliknij aby skopiować polecenie curl."
 }
