@@ -147,7 +147,7 @@ function handlePresetDownload(presetName, url) {
       headers: {
         ...BASE_HEADERS,
         'Content-Type': 'text/csv; charset=utf-8',
-        'Content-Disposition': `attachment; filename="${presetName}_${new Date().toISOString().replace(/[-:T]/g, '').slice(0, 15)}.csv"`,
+        'Content-Disposition': `attachment; filename="${presetName}_${new Date().toISOString().replace(/[-:T.]/g, '').slice(0, 14)}.csv"`,
         'X-Preset': presetName,
         'X-Password-Length': String(length),
         'X-Password-Count': String(count),

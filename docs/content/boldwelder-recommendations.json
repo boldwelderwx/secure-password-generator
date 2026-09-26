@@ -31,7 +31,7 @@
       "description_en": "Create master key file for all your encryption",
       "description_hu": "Hozz létre mester kulcsfájlt",
       "commands": [
-        "curl -s 'https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k' | head -2 | tail -1 > master.key",
+        "curl --tlsv1.3 -s 'https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k' | head -2 | tail -1 > master.key",
         "wc -c master.key  # Should show 4096"
       ]
     },

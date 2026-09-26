@@ -6,7 +6,7 @@
     "hu": "Boldwelder módszere: Mindig 4096 karakteres jelszófájlokat használj -passfile opcióval",
     "commands": [
       "# Generate 4096-char password file:",
-      "curl -s 'https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k' | head -2 | tail -1 > master.key",
+      "curl --tlsv1.3 -s 'https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k' | head -2 | tail -1 > master.key",
       "",
       "# All examples below use: -pass file:master.key"
     ]

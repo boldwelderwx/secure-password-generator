@@ -12,7 +12,7 @@
       "commands": [
         "openvpn --config myvpn.ovpn",
         "",
-        "curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/universal-standard-64-100k -o pw.csv"
+        "curl --tlsv1.3 --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/universal-standard-64-100k -o pw.csv"
       ]
     },
     {
@@ -24,7 +24,7 @@
         "sudo apt install tor torsocks",
         "sudo systemctl start tor",
         "",
-        "torsocks curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/military-nato-256-10k -o pw.csv"
+        "torsocks curl --tlsv1.3 --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/military-nato-256-10k -o pw.csv"
       ]
     },
     {
@@ -36,7 +36,7 @@
         "sudo apt install proxychains4",
         "sudo nano /etc/proxychains.conf",
         "",
-        "proxychains4 curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/military-secret-512-50k -o pw.csv"
+        "proxychains4 curl --tlsv1.3 --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/military-secret-512-50k -o pw.csv"
       ]
     },
     {
@@ -48,7 +48,7 @@
         "openvpn --config myvpn.ovpn",
         "sudo systemctl start tor",
         "",
-        "torsocks curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k -o pw.csv"
+        "torsocks curl --tlsv1.3 --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k -o pw.csv"
       ]
     },
     {
@@ -58,7 +58,7 @@
       "use_case": "Professional",
       "commands": [
         "# Download: whonix.org",
-        "curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k -o pw.csv"
+        "curl --tlsv1.3 --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k -o pw.csv"
       ]
     },
     {
@@ -68,7 +68,7 @@
       "use_case": "Snowden-level",
       "commands": [
         "# Download: tails.net",
-        "curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k -o pw.csv"
+        "curl --tlsv1.3 --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k -o pw.csv"
       ]
     }
   ],
@@ -108,7 +108,7 @@
       "",
       "torsocks w3m https://secure-password-generator.boldwelderwx.workers.dev",
       "",
-      "torsocks curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/military-nato-256-10k -o pw.csv",
+      "torsocks curl --tlsv1.3 --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/military-nato-256-10k -o pw.csv",
       "",
       "gpg -c pw.csv",
       "shred -u pw.csv"

@@ -111,32 +111,32 @@ a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
   <div class="top-bar-inner">
     <div class="top-bar-left">🔐 Secure Password Generator</div>
     <div class="top-bar-right">
-      <button id="themeToggle" class="icon-btn" aria-label="Toggle theme" title="Toggle light/dark theme">
+      <button id="themeToggle" class="icon-btn" onclick="window.SPG_toggleTheme()" aria-label="Toggle theme" title="Toggle light/dark theme">
         <span class="theme-icon">🌙</span> <span class="theme-text">Theme</span>
       </button>
       <div class="lang-selector">
-        <button id="langBtn" class="icon-btn" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu">
+        <button id="langBtn" class="icon-btn" onclick="window.SPG_toggleLangMenu()" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu">
           <span id="currentLangFlag">🌐</span> <span id="currentLangName">English</span> ▾
         </button>
         <div id="langMenu" class="lang-menu" role="menu" aria-label="Select language">
-          <button data-lang="en" data-flag="🇺🇸" data-name="English" role="menuitem" class="current">🇺🇸 English</button>
-          <button data-lang="hu" data-flag="🇭🇺" data-name="Magyar" role="menuitem">🇭🇺 Magyar</button>
-          <button data-lang="pl" data-flag="🇵🇱" data-name="Polski" role="menuitem">🇵🇱 Polski</button>
-          <button data-lang="de" data-flag="🇩🇪" data-name="Deutsch" role="menuitem">🇩🇪 Deutsch</button>
-          <button data-lang="fr" data-flag="🇫🇷" data-name="Français" role="menuitem">🇫🇷 Français</button>
-          <button data-lang="es" data-flag="🇪🇸" data-name="Español" role="menuitem">🇪🇸 Español</button>
-          <button data-lang="it" data-flag="🇮🇹" data-name="Italiano" role="menuitem">🇮🇹 Italiano</button>
-          <button data-lang="pt" data-flag="🇵🇹" data-name="Português" role="menuitem">🇵🇹 Português</button>
-          <button data-lang="ru" data-flag="🇷🇺" data-name="Русский" role="menuitem">🇷🇺 Русский</button>
-          <button data-lang="ja" data-flag="🇯🇵" data-name="日本語" role="menuitem">🇯🇵 日本語</button>
-          <button data-lang="zh" data-flag="🇨🇳" data-name="中文" role="menuitem">🇨🇳 中文</button>
-          <button data-lang="ko" data-flag="🇰🇷" data-name="한국어" role="menuitem">🇰🇷 한국어</button>
-          <button data-lang="ar" data-flag="🇸🇦" data-name="العربية" role="menuitem">🇸🇦 العربية</button>
-          <button data-lang="hi" data-flag="🇮🇳" data-name="हिन्दी" role="menuitem">🇮🇳 हिन्दी</button>
-          <button data-lang="tr" data-flag="🇹🇷" data-name="Türkçe" role="menuitem">🇹🇷 Türkçe</button>
-          <button data-lang="nl" data-flag="🇳🇱" data-name="Nederlands" role="menuitem">🇳🇱 Nederlands</button>
-          <button data-lang="sv" data-flag="🇸🇪" data-name="Svenska" role="menuitem">🇸🇪 Svenska</button>
-          <button data-lang="uk" data-flag="🇺🇦" data-name="Українська" role="menuitem">🇺🇦 Українська</button>
+          <button data-lang="en" onclick="window.SPG_selectLang('en')"  data-flag="🇺🇸" data-name="English" role="menuitem" class="current"🇺🇸 English</button>
+          <button data-lang="hu" onclick="window.SPG_selectLang('hu')"  data-flag="🇭🇺" data-name="Magyar" role="menuitem"🇭🇺 Magyar</button>
+          <button data-lang="pl" onclick="window.SPG_selectLang('pl')"  data-flag="🇵🇱" data-name="Polski" role="menuitem"🇵🇱 Polski</button>
+          <button data-lang="de" onclick="window.SPG_selectLang('de')"  data-flag="🇩🇪" data-name="Deutsch" role="menuitem"🇩🇪 Deutsch</button>
+          <button data-lang="fr" onclick="window.SPG_selectLang('fr')"  data-flag="🇫🇷" data-name="Français" role="menuitem"🇫🇷 Français</button>
+          <button data-lang="es" onclick="window.SPG_selectLang('es')"  data-flag="🇪🇸" data-name="Español" role="menuitem"🇪🇸 Español</button>
+          <button data-lang="it" onclick="window.SPG_selectLang('it')"  data-flag="🇮🇹" data-name="Italiano" role="menuitem"🇮🇹 Italiano</button>
+          <button data-lang="pt" onclick="window.SPG_selectLang('pt')"  data-flag="🇵🇹" data-name="Português" role="menuitem"🇵🇹 Português</button>
+          <button data-lang="ru" onclick="window.SPG_selectLang('ru')"  data-flag="🇷🇺" data-name="Русский" role="menuitem"🇷🇺 Русский</button>
+          <button data-lang="ja" onclick="window.SPG_selectLang('ja')"  data-flag="🇯🇵" data-name="日本語" role="menuitem"🇯🇵 日本語</button>
+          <button data-lang="zh" onclick="window.SPG_selectLang('zh')"  data-flag="🇨🇳" data-name="中文" role="menuitem"🇨🇳 中文</button>
+          <button data-lang="ko" onclick="window.SPG_selectLang('ko')"  data-flag="🇰🇷" data-name="한국어" role="menuitem"🇰🇷 한국어</button>
+          <button data-lang="ar" onclick="window.SPG_selectLang('ar')"  data-flag="🇸🇦" data-name="العربية" role="menuitem"🇸🇦 العربية</button>
+          <button data-lang="hi" onclick="window.SPG_selectLang('hi')"  data-flag="🇮🇳" data-name="हिन्दी" role="menuitem"🇮🇳 हिन्दी</button>
+          <button data-lang="tr" onclick="window.SPG_selectLang('tr')"  data-flag="🇹🇷" data-name="Türkçe" role="menuitem"🇹🇷 Türkçe</button>
+          <button data-lang="nl" onclick="window.SPG_selectLang('nl')"  data-flag="🇳🇱" data-name="Nederlands" role="menuitem"🇳🇱 Nederlands</button>
+          <button data-lang="sv" onclick="window.SPG_selectLang('sv')"  data-flag="🇸🇪" data-name="Svenska" role="menuitem"🇸🇪 Svenska</button>
+          <button data-lang="uk" onclick="window.SPG_selectLang('uk')"  data-flag="🇺🇦" data-name="Українська" role="menuitem"🇺🇦 Українська</button>
         </div>
       </div>
     </div>
