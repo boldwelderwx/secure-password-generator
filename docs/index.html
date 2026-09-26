@@ -36,8 +36,8 @@ a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
 
 /* Language selector */
 .lang-selector{position:relative}
-.lang-menu{display:none;position:absolute;top:calc(100% + .5rem);right:0;background:var(--bg);border:1px solid var(--brd);border-radius:.5rem;padding:.5rem;min-width:200px;max-height:70vh;overflow-y:auto;box-shadow:0 10px 25px rgba(0,0,0,.15);z-index:1001}
-.lang-menu.active{display:block}
+.lang-menu{visibility:hidden;opacity:0;transform:translateY(-10px);transition:all .2s ease;position:absolute;top:calc(100% + .5rem);right:0;background:var(--bg);border:1px solid var(--brd);border-radius:.5rem;padding:.5rem;min-width:200px;max-height:70vh;overflow-y:auto;box-shadow:0 10px 25px rgba(0,0,0,.15);z-index:1001;pointer-events:none}
+.lang-menu.active{visibility:visible;opacity:1;transform:translateY(0);pointer-events:auto}
 .lang-menu button{display:block;width:100%;text-align:left;padding:.5rem .75rem;background:none;border:none;color:var(--txt);border-radius:.25rem;cursor:pointer;font-size:.9rem;font-family:inherit;transition:background .15s}
 .lang-menu button:hover,.lang-menu button:focus-visible{background:var(--bg3);color:var(--acc)}
 .lang-menu button.current{background:var(--acc);color:#fff}

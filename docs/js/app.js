@@ -414,7 +414,7 @@ gpg --verify downloaded-file.sig downloaded-file</code></pre>
   }
   
   async function copyPreset(name) {
-    const cmd = `curl --compressed ${WORKER}/preset/${name} -o passwords.csv`;
+    const cmd = `curl --compressed ${WORKER}/preset/${name} -o ` + name + '_' + new Date().toISOString().replace(/[-:T]/g,'').slice(0,15) + `.csv`;
     const msg = `📋 Command copied!
 
 ${cmd}
@@ -423,7 +423,7 @@ ${cmd}
 1. Open your console (see Beginner Guide above)
 2. Paste this command (Ctrl+V or Cmd+V)
 3. Press Enter
-4. The file "passwords.csv" downloads to your current folder
+4. The file "` + name + '_' + new Date().toISOString().replace(/[-:T]/g,'').slice(0,15) + `.csv" downloads to your current folder
 
 💡 The CSV uses column layout (max 5000 rows, passwords only).
    Open in Excel/LibreOffice - it works perfectly!`;
@@ -684,14 +684,14 @@ pass email/gmail` }
     if (!el) return;
     const tools = [
       { icon: '🖼️', name: 'Steghide', desc: 'Hide data in JPEG/BMP/WAV files', code: `# Hide CSV in image
-steghide embed -cf cover.jpg -ef passwords.csv \
+steghide embed -cf cover.jpg -ef ` + name + '_' + new Date().toISOString().replace(/[-:T]/g,'').slice(0,15) + `.csv \
   -p "passphrase" -sf stego.jpg
 
 # Extract
 steghide extract -sf stego.jpg -p "passphrase"` },
       { icon: '🎨', name: 'OpenStego', desc: 'Java-based with watermarking', code: `# Hide data
 java -jar openstego.jar embed \
-  -mf passwords.csv -cf cover.png \
+  -mf ` + name + '_' + new Date().toISOString().replace(/[-:T]/g,'').slice(0,15) + `.csv -cf cover.png \
   -sf stego.png -p passphrase
 
 # Extract

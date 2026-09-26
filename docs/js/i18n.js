@@ -43,7 +43,19 @@
       // Toggle menu on button click
       langBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const isOpen = langMenu.classList.toggle('active');
+        const isOpen = !langMenu.classList.contains('active');
+        if (isOpen) {
+          langMenu.classList.add('active');
+          langMenu.style.visibility = 'visible';
+          langMenu.style.opacity = '1';
+          langMenu.style.pointerEvents = 'auto';
+        } else {
+          langMenu.classList.remove('active');
+          langMenu.style.visibility = 'hidden';
+          langMenu.style.opacity = '0';
+          langMenu.style.pointerEvents = 'none';
+        }
+        console.log('[i18n] Language menu toggled:', isOpen ? 'OPEN' : 'CLOSED');
         langBtn.setAttribute('aria-expanded', String(isOpen));
       });
       
@@ -55,6 +67,9 @@
           const lang = btn.dataset.lang;
           await this.setLanguage(lang);
           langMenu.classList.remove('active');
+          langMenu.style.visibility = 'hidden';
+          langMenu.style.opacity = '0';
+          langMenu.style.pointerEvents = 'none';
           langBtn.setAttribute('aria-expanded', 'false');
         });
       });
@@ -63,6 +78,9 @@
       document.addEventListener('click', (e) => {
         if (!langBtn.contains(e.target) && !langMenu.contains(e.target)) {
           langMenu.classList.remove('active');
+          langMenu.style.visibility = 'hidden';
+          langMenu.style.opacity = '0';
+          langMenu.style.pointerEvents = 'none';
           langBtn.setAttribute('aria-expanded', 'false');
         }
       });
@@ -71,6 +89,9 @@
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && langMenu.classList.contains('active')) {
           langMenu.classList.remove('active');
+          langMenu.style.visibility = 'hidden';
+          langMenu.style.opacity = '0';
+          langMenu.style.pointerEvents = 'none';
           langBtn.setAttribute('aria-expanded', 'false');
           langBtn.focus();
         }
