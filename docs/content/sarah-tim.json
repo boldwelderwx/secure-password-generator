@@ -1,40 +1,31 @@
 {
-  "title": "Sarah & Tim: Public/Private Key Story",
-  "title_hu": "Sára és Tim: Publikus/Privát Kulcs Történet",
   "story": {
-    "en": "Sarah wants to send a secret message to Tim. They've never met. Public-key cryptography makes this possible - even over insecure channels. Let's walk through the entire process with real OpenSSL commands.",
-    "hu": "Sára titkos üzenetet akar küldeni Tim-nek. Soha nem találkoztak. A publikus-kulcsos kriptográfia ezt lehetővé teszi - még nem biztonságos csatornákon is."
+    "en": "Sarah wants to send a secret message to Tim. They've never met. Public-key cryptography makes this possible - even over insecure channels.",
+    "hu": "Sára titkos üzenetet akar küldeni Tim-nek. Soha nem találkoztak. A publikus-kulcsos kriptográfia lehetővé teszi - még nem biztonságos csatornákon is."
   },
   "full_workflow": [
     {
       "step": 1,
       "title_en": "Tim generates his keypair",
-      "title_hu": "Tim generálja a kulcspárját",
+      "title_hu": "Tim generálja kulcspárját",
       "commands": [
-        "# Tim generates RSA-4096 keypair:",
-        "openssl genpkey -algorithm RSA \\",
-        "  -pkeyopt rsa_keygen_bits:4096 \\",
-        "  -out tim_private.pem",
-        "",
-        "# Extract public key (share with Sarah):",
-        "openssl pkey -in tim_private.pem -pubout -out tim_public.pem",
-        "",
-        "# Tim sends tim_public.pem to Sarah (even via email!)"
+        "openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out tim_private.pem",
+        "openssl pkey -in tim_private.pem -pubout -out tim_public.pem"
       ]
     },
     {
       "step": 2,
       "title_en": "Sarah gets Tim's public key",
       "title_hu": "Sára megkapja Tim publikus kulcsát",
-      "note_en": "Public keys can be shared openly. Even if intercepted, they can't decrypt messages.",
-      "note_hu": "A publikus kulcsok nyíltan megoszthatók. Még ha elfogják is, nem tudják dekódolni."
+      "note_en": "Public keys can be shared openly.",
+      "note_hu": "Publikus kulcsok nyíltan megoszthatók."
     },
     {
       "step": 3,
-      "title_en": "Sarah writes her secret message",
-      "title_hu": "Sára megírja a titkos üzenetét",
+      "title_en": "Sarah writes secret message",
+      "title_hu": "Sára megírja titkos üzenetét",
       "commands": [
-        "echo 'Meet me at the cafe at 8pm. -Sarah' > secret.txt"
+        "echo 'Meet me at cafe 8pm. -Sarah' > secret.txt"
       ]
     },
     {
@@ -42,26 +33,19 @@
       "title_en": "Sarah encrypts with Tim's public key",
       "title_hu": "Sára titkosít Tim publikus kulcsával",
       "commands": [
-        "openssl pkeyutl -encrypt \\",
-        "  -pubin -inkey tim_public.pem \\",
-        "  -in secret.txt \\",
-        "  -out secret.enc \\",
-        "  -pkeyopt rsa_padding_mode:oaep \\",
-        "  -pkeyopt rsa_oaep_md:sha256"
+        "openssl pkeyutl -encrypt -pubin -inkey tim_public.pem \\",
+        "  -in secret.txt -out secret.enc \\",
+        "  -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256"
       ]
     },
     {
       "step": 5,
       "title_en": "Tim decrypts with his private key",
-      "title_hu": "Tim dekódolja a privát kulcsával",
+      "title_hu": "Tim dekódolja privát kulcsával",
       "commands": [
-        "openssl pkeyutl -decrypt \\",
-        "  -inkey tim_private.pem \\",
-        "  -in secret.enc \\",
-        "  -out decrypted.txt \\",
-        "  -pkeyopt rsa_padding_mode:oaep \\",
-        "  -pkeyopt rsa_oaep_md:sha256",
-        "",
+        "openssl pkeyutl -decrypt -inkey tim_private.pem \\",
+        "  -in secret.enc -out decrypted.txt \\",
+        "  -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256",
         "cat decrypted.txt"
       ]
     },
@@ -70,22 +54,11 @@
       "title_en": "Hybrid encryption for large files",
       "title_hu": "Hibrid titkosítás nagy fájlokhoz",
       "commands": [
-        "# Generate random AES key:",
         "openssl rand 32 > aes_key.bin",
-        "",
-        "# Encrypt large file with AES-256:",
         "openssl enc -aes-256-cbc -salt -pbkdf2 \\",
-        "  -in bigfile.zip -out bigfile.enc \\",
-        "  -pass file:aes_key.bin",
-        "",
-        "# Encrypt AES key with Tim's public key:",
-        "openssl pkeyutl -encrypt \\",
-        "  -pubin -inkey tim_public.pem \\",
-        "  -in aes_key.bin \\",
-        "  -out aes_key.enc \\",
-        "  -pkeyopt rsa_padding_mode:oaep",
-        "",
-        "# Send both: bigfile.enc + aes_key.enc"
+        "  -in bigfile.zip -out bigfile.enc -pass file:aes_key.bin",
+        "openssl pkeyutl -encrypt -pubin -inkey tim_public.pem \\",
+        "  -in aes_key.bin -out aes_key.enc -pkeyopt rsa_padding_mode:oaep"
       ]
     }
   ],

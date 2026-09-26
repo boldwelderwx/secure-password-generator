@@ -1,8 +1,8 @@
 {
   "badge": "⚡ Production Ready",
-  "title_1": "Secure Password",
-  "title_2": "Database Generator",
-  "subtitle": "Professional cryptographic tool. Generate password databases with military-grade randomness.",
+  "title_1": "안전한 비밀번호",
+  "title_2": "DB 생성기",
+  "subtitle": "전문 암호 도구",
   "stat_presets": "Presets",
   "stat_categories": "Categories",
   "stat_maxlength": "Max Length",

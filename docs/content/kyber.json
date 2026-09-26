@@ -1,131 +1,98 @@
 {
-  "title": "Kyber / ML-KEM Post-Quantum Encryption",
-  "title_hu": "Kyber / ML-KEM Poszt-Kvantum Titkosítás",
+  "title": "Kyber / ML-KEM",
   "intro": {
-    "en": "ML-KEM (formerly Kyber) is the NIST FIPS 203 standard for post-quantum key encapsulation. As of April 2025, OpenSSL 3.5+ supports ML-KEM natively - no third-party provider needed! This protects against future quantum computers that could break RSA/ECC.",
-    "hu": "Az ML-KEM (korábban Kyber) a NIST FIPS 203 szabvány a poszt-kvantum kulcs-kapszulázáshoz. 2025 áprilisától az OpenSSL 3.5+ natívan támogatja az ML-KEM-et - nincs szükség harmadik fél provider-re! Megvéd a jövőbeli kvantumszámítógépektől, amelyek feltörhetnék az RSA/ECC-t."
+    "en": "ML-KEM (formerly Kyber) is the NIST FIPS 203 standard for post-quantum key encapsulation. OpenSSL 3.5+ (April 2025) supports it natively - no third-party provider needed!",
+    "hu": "Az ML-KEM (korábban Kyber) a NIST FIPS 203 szabvány. Az OpenSSL 3.5+ natívan támogatja!"
   },
   "why_kyber": [
     {
-      "en": "NIST FIPS 203 standard (official since 2024)",
-      "hu": "NIST FIPS 203 szabvány (hivatalos 2024 óta)"
+      "en": "NIST FIPS 203 standard",
+      "hu": "NIST FIPS 203 szabvány"
     },
     {
-      "en": "Quantum-resistant (Shor's algorithm can't break it)",
-      "hu": "Kvantum-ellenálló (Shor algoritmusa nem töri fel)"
+      "en": "Quantum-resistant",
+      "hu": "Kvantum-ellenálló"
     },
     {
-      "en": "Fast and compact key sizes",
-      "hu": "Gyors és kompakt kulcsméretek"
+      "en": "Native in OpenSSL 3.5+",
+      "hu": "Natív OpenSSL 3.5+-ban"
     },
     {
-      "en": "Native in OpenSSL 3.5+ (April 2025)",
-      "hu": "Natív OpenSSL 3.5+-ban (2025 április)"
+      "en": "Used by Signal, Apple, Cloudflare",
+      "hu": "Signal, Apple, Cloudflare használja"
     },
     {
-      "en": "Already used by Signal, Apple, Cloudflare in hybrid TLS",
-      "hu": "Már használja Signal, Apple, Cloudflare hibrid TLS-ben"
-    },
-    {
-      "en": "Hybrid mode: X25519 + ML-KEM-768 (best of both worlds)",
-      "hu": "Hibrid mód: X25519 + ML-KEM-768 (mindkettő előnye)"
+      "en": "Hybrid mode: X25519 + ML-KEM-768",
+      "hu": "Hibrid mód: X25519 + ML-KEM-768"
     }
   ],
   "kyber_variants": [
     {
-      "name": "ML-KEM-512 (Kyber-512)",
-      "security": "AES-128 equivalent",
-      "use": "Fast, general purpose",
-      "pubkey": "800 bytes",
-      "privkey": "1632 bytes",
-      "ciphertext": "768 bytes"
+      "name": "ML-KEM-512",
+      "security": "AES-128",
+      "use": "Fast",
+      "pubkey": "800B",
+      "privkey": "1632B",
+      "ciphertext": "768B"
     },
     {
-      "name": "ML-KEM-768 (Kyber-768)",
-      "security": "AES-192 equivalent",
-      "use": "Recommended balance",
-      "pubkey": "1184 bytes",
-      "privkey": "2400 bytes",
-      "ciphertext": "1088 bytes"
+      "name": "ML-KEM-768",
+      "security": "AES-192",
+      "use": "Recommended",
+      "pubkey": "1184B",
+      "privkey": "2400B",
+      "ciphertext": "1088B"
     },
     {
-      "name": "ML-KEM-1024 (Kyber-1024)",
-      "security": "AES-256 equivalent",
-      "use": "Maximum security",
-      "pubkey": "1568 bytes",
-      "privkey": "3168 bytes",
-      "ciphertext": "1568 bytes"
+      "name": "ML-KEM-1024",
+      "security": "AES-256",
+      "use": "Maximum",
+      "pubkey": "1568B",
+      "privkey": "3168B",
+      "ciphertext": "1568B"
     }
   ],
   "examples": [
     {
-      "tool": "OpenSSL 3.5+ (Native ML-KEM - Recommended!)",
-      "note_en": "OpenSSL 3.5 (released April 2025) ships ML-KEM natively. No oqs-provider needed!",
-      "note_hu": "Az OpenSSL 3.5 (2025 április) natívan tartalmazza az ML-KEM-et. Nem kell oqs-provider!",
+      "tool": "OpenSSL 3.5+ (Native ML-KEM)",
+      "note_en": "OpenSSL 3.5 (April 2025) ships ML-KEM natively. Compile from source for the latest!",
+      "note_hu": "Az OpenSSL 3.5 natívan tartalmazza az ML-KEM-et. Compile source-ról a legújabbért!",
       "commands": [
-        "# Check your OpenSSL version (need 3.5+):",
+        "# Check version (need 3.5+):",
         "openssl version",
         "",
-        "# Generate ML-KEM-768 keypair (recommended):",
+        "# Generate ML-KEM-768 keypair:",
         "openssl genpkey -algorithm ml-kem-768 -out mlkem768_priv.pem",
         "",
-        "# Extract public key (share with others):",
+        "# Extract public key:",
         "openssl pkey -in mlkem768_priv.pem -pubout -out mlkem768_pub.pem",
         "",
-        "# Encapsulate (Alice creates shared secret + ciphertext):",
+        "# Encapsulate (Alice creates shared secret):",
         "openssl pkeyutl -encapsulate -pubin -inkey mlkem768_pub.pem \\",
         "  -out ciphertext.bin -out secret_alice.bin",
         "",
-        "# Decapsulate (Bob recovers shared secret from ciphertext):",
+        "# Decapsulate (Bob recovers secret):",
         "openssl pkeyutl -decapsulate -inkey mlkem768_priv.pem \\",
-        "  -in ciphertext.bin -out secret_bob.bin",
-        "",
-        "# Verify both secrets match:",
-        "diff secret_alice.bin secret_bob.bin && echo '✓ Match!'"
+        "  -in ciphertext.bin -out secret_bob.bin"
       ]
     },
     {
       "tool": "Hybrid TLS 1.3 (X25519 + ML-KEM-768)",
-      "note_en": "Best practice: use hybrid key exchange for both classical and quantum security.",
-      "note_hu": "Legjobb gyakorlat: használj hibrid kulcscserét klasszikus és kvantumbiztonságért.",
+      "note_en": "Best practice: hybrid key exchange for both classical and quantum security.",
+      "note_hu": "Legjobb gyakorlat: hibrid kulcs klasszikus + kvantum biztonságért.",
       "commands": [
-        "# Connect to Cloudflare with hybrid post-quantum TLS:",
+        "# Connect with hybrid post-quantum TLS:",
         "openssl s_client -connect cloudflare.com:443 \\",
-        "  -groups x25519_mlkem768 -brief",
-        "",
-        "# Test your own server with hybrid groups:",
-        "openssl s_client -connect yourserver.com:443 \\",
-        "  -groups x25519_mlkem768:p256_mlkem768 \\",
-        "  -brief -status"
+        "  -groups x25519_mlkem768 -brief"
       ]
     },
     {
-      "tool": "Cloudflare - Native ML-KEM Support",
-      "note_en": "Cloudflare's edge supports post-quantum TLS by default! Your browser likely already negotiates ML-KEM when visiting this site.",
-      "note_hu": "A Cloudflare edge alapból támogatja a poszt-kvantum TLS-t! A böngésződ valószínűleg már ML-KEM-et használ amikor ezt az oldalt nézed.",
+      "tool": "Cloudflare Native Support",
+      "note_en": "Cloudflare's edge supports post-quantum TLS by default!",
+      "note_hu": "A Cloudflare alapból támogatja a poszt-kvantum TLS-t!",
       "commands": [
         "# Test if Cloudflare offers ML-KEM:",
-        "curl -vI https://cloudflare.com 2>&1 | grep -i 'kyber\\|ml-kem'",
-        "",
-        "# Or use openssl to inspect the handshake:",
-        "openssl s_client -connect cloudflare.com:443 -brief 2>&1 | grep -i 'group\\|kyber\\|ml-kem'"
-      ]
-    },
-    {
-      "tool": "oqs-provider (For older OpenSSL 3.2-3.4)",
-      "install": "git clone https://github.com/open-quantum-safe/oqs-provider && cd oqs-provider && cmake . && make && sudo make install",
-      "note_en": "If you're on OpenSSL 3.2-3.4, you need the oqs-provider plugin.",
-      "note_hu": "Ha OpenSSL 3.2-3.4-et használsz, az oqs-provider plugin szükséges.",
-      "commands": [
-        "# Enable provider in openssl.cnf or via CLI:",
-        "export OPENSSL_MODULES=/usr/local/lib/ossl-modules",
-        "",
-        "# List available post-quantum algorithms:",
-        "openssl list -kem-algorithms -provider oqsprovider",
-        "",
-        "# Generate with provider:",
-        "openssl genpkey -provider oqsprovider \\",
-        "  -algorithm ml_kem_768 -out mlkem768.pem"
+        "curl -vI https://cloudflare.com 2>&1 | grep -i 'kyber\\|ml-kem'"
       ]
     }
   ]

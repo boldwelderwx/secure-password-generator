@@ -1,9 +1,7 @@
 {
-  "title": "Complete Anonymity Guide",
-  "title_hu": "Teljes Anonimitási Útmutató",
   "why_anonymous": {
-    "en": "When generating password databases, you may want complete anonymity. This guide shows how to use this tool without revealing your identity.",
-    "hu": "Jelszóadatbázisok generálásakor teljes anonimitást akarsz. Ez az útmutató megmutatja hogyan."
+    "en": "When generating password databases, you may want complete anonymity. This guide shows how.",
+    "hu": "Jelszóadatbázisok generálásakor teljes anonimitást akarsz."
   },
   "levels": [
     {
@@ -12,10 +10,8 @@
       "security": "Medium",
       "use_case": "Everyday privacy",
       "commands": [
-        "# Connect VPN first:",
         "openvpn --config myvpn.ovpn",
         "",
-        "# Then generate passwords:",
         "curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/universal-standard-64-100k -o pw.csv"
       ]
     },
@@ -25,28 +21,20 @@
       "security": "High",
       "use_case": "Strong anonymity",
       "commands": [
-        "# Install Tor:",
         "sudo apt install tor torsocks",
-        "",
-        "# Start Tor service:",
         "sudo systemctl start tor",
         "",
-        "# Use torsocks wrapper:",
-        "torsocks curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/military-nato-256-10k -o pw.csv",
-        "",
-        "# Or use 'torify' alias:",
-        "torify curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/crypto-wallet-128-10k -o pw.csv"
+        "torsocks curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/military-nato-256-10k -o pw.csv"
       ]
     },
     {
       "level": 3,
       "name": "Proxychains",
       "security": "Very High",
-      "use_case": "Advanced anonymity",
+      "use_case": "Advanced",
       "commands": [
         "sudo apt install proxychains4",
         "sudo nano /etc/proxychains.conf",
-        "# Add: socks5 127.0.0.1 9050 (Tor)",
         "",
         "proxychains4 curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/military-secret-512-50k -o pw.csv"
       ]
@@ -57,52 +45,42 @@
       "security": "Maximum",
       "use_case": "Whistleblowers",
       "commands": [
-        "# 1. Connect VPN:",
         "openvpn --config myvpn.ovpn",
-        "# 2. Start Tor:",
         "sudo systemctl start tor",
-        "# 3. Use torsocks:",
-        "torsocks curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k -o pw.csv",
-        "# Path: You → VPN → Tor → Worker"
+        "",
+        "torsocks curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k -o pw.csv"
       ]
     },
     {
       "level": 5,
       "name": "Whonix (VM)",
       "security": "Maximum+",
-      "use_case": "Professional ops",
+      "use_case": "Professional",
       "commands": [
-        "# Download Whonix: whonix.org",
-        "# In Whonix-Workstation (Tor pre-routed):",
+        "# Download: whonix.org",
         "curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k -o pw.csv"
       ]
     },
     {
       "level": 6,
-      "name": "Tails OS (Live USB)",
+      "name": "Tails OS",
       "security": "Ultimate",
       "use_case": "Snowden-level",
       "commands": [
-        "# 1. Download Tails: tails.net",
-        "# 2. Boot from USB",
-        "# 3. All traffic forced through Tor",
-        "# 4. Generate:",
-        "curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k -o pw.csv",
-        "# 5. Save to encrypted persistent storage"
+        "# Download: tails.net",
+        "curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k -o pw.csv"
       ]
     }
   ],
   "text_browsers": {
-    "title_en": "Terminal Web Browsers (for Tor anonymity)",
-    "title_hu": "Terminál Web Böngészők (Tor anonimitáshoz)",
-    "intro_en": "For maximum anonymity, use text-based browsers through Tor. No JavaScript, no tracking, no fingerprinting.",
-    "intro_hu": "Maximális anonimitáshoz használj szöveges böngészőket Tor-on keresztül. Nincs JS, nincs követés.",
+    "intro_en": "For maximum anonymity, use text-based browsers through Tor. No JavaScript, no tracking.",
+    "intro_hu": "Maximális anonimitáshoz használj szöveges böngészőket Tor-on.",
     "browsers": [
       {
         "name": "w3m",
         "install": "sudo apt install w3m",
         "usage": "torsocks w3m https://secure-password-generator.boldwelderwx.workers.dev",
-        "features": "Tables, images (terminal), tabs"
+        "features": "Tables, images"
       },
       {
         "name": "links2",
@@ -114,32 +92,26 @@
         "name": "lynx",
         "install": "sudo apt install lynx",
         "usage": "torsocks lynx https://secure-password-generator.boldwelderwx.workers.dev",
-        "features": "Oldest, most stable"
+        "features": "Oldest, stable"
       },
       {
         "name": "elinks",
         "install": "sudo apt install elinks",
         "usage": "torsocks elinks https://secure-password-generator.boldwelderwx.workers.dev",
-        "features": "Modern, mouse support"
+        "features": "Modern, mouse"
       }
     ],
     "full_workflow_en": "Complete anonymous workflow:",
     "full_workflow_hu": "Teljes anonim workflow:",
     "workflow_commands": [
-      "# 1. Start Tor:",
       "sudo systemctl start tor",
       "",
-      "# 2. Browse anonymously in terminal:",
       "torsocks w3m https://secure-password-generator.boldwelderwx.workers.dev",
       "",
-      "# 3. Navigate, copy the curl command you want",
-      "",
-      "# 4. Generate passwords anonymously:",
       "torsocks curl --compressed https://secure-password-generator.boldwelderwx.workers.dev/preset/military-nato-256-10k -o pw.csv",
       "",
-      "# 5. Encrypt immediately:",
       "gpg -c pw.csv",
-      "shred -u pw.csv  # Secure delete plaintext"
+      "shred -u pw.csv"
     ]
   }
 }

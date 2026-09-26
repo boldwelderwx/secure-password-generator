@@ -1,9 +1,7 @@
 {
-  "title": "Boldwelder Recommendations - 4096 Character Passwords",
-  "title_hu": "Boldwelder Ajánlások - 4096 Karakteres Jelszavak",
   "philosophy": {
-    "en": "In my experience as a security researcher, 4096-character passwords with file-based key loading provide the highest practical security. Here's why and how.",
-    "hu": "Biztonságkutatói tapasztalataim szerint a 4096 karakteres jelszavak fájl-alapú betöltéssel a legmagasabb gyakorlati biztonságot nyújtják."
+    "en": "In my experience, 4096-character passwords with file-based key loading provide the highest practical security.",
+    "hu": "Tapasztalataim szerint a 4096 karakteres jelszavak fájl-alapú betöltéssel adják a legmagasabb gyakorlati biztonságot."
   },
   "why_4096": [
     {
@@ -11,99 +9,83 @@
       "hu": "4096 bit = RSA kulcshossz szabvány"
     },
     {
-      "en": "Brute-force impossible with current technology",
-      "hu": "Brute-force lehetetlen jelen technológiával"
+      "en": "Brute-force impossible",
+      "hu": "Brute-force lehetetlen"
     },
     {
       "en": "Fits in memory easily",
       "hu": "Könnyen elfér memóriában"
     },
     {
-      "en": "Easy to store in a text file",
+      "en": "Easy to store in text file",
       "hu": "Könnyű fájlban tárolni"
     },
     {
-      "en": "Can be generated in milliseconds",
-      "hu": "Ezredmásodpercek alatt generálható"
+      "en": "Generated in milliseconds",
+      "hu": "Milliszekundumok alatt generálható"
     }
   ],
   "openssl_passfile_examples": [
     {
-      "tool": "Generate 4096-char Master Key File",
-      "description_en": "Create a master key file to use with all your encryption tools",
-      "description_hu": "Hozz létre egy mester kulcsfájlt az összes titkosító eszközödhöz",
+      "tool": "Generate 4096-char Master Key",
+      "description_en": "Create master key file for all your encryption",
+      "description_hu": "Hozz létre mester kulcsfájlt",
       "commands": [
-        "# Generate 4096-char password from the Worker:",
         "curl -s 'https://secure-password-generator.boldwelderwx.workers.dev/preset/extreme-4096-100k' | head -2 | tail -1 > master.key",
-        "",
-        "# Verify the length:",
         "wc -c master.key  # Should show 4096"
       ]
     },
     {
-      "tool": "OpenSSL AES-256-CBC with Password File",
-      "description_en": "Encrypt files using -pass file: syntax",
-      "description_hu": "Fájlok titkosítása -pass file: szintaxissal",
+      "tool": "OpenSSL AES-256-CBC with -pass file:",
+      "description_en": "Encrypt files using password file",
+      "description_hu": "Fájlok titkosítása jelszófájllal",
       "commands": [
-        "# Encrypt a document:",
         "openssl enc -aes-256-cbc -salt -pbkdf2 -iter 1000000 \\",
         "  -in secret.pdf -out secret.enc \\",
         "  -pass file:master.key",
         "",
-        "# Decrypt:",
         "openssl enc -d -aes-256-cbc -pbkdf2 -iter 1000000 \\",
         "  -in secret.enc -out secret.pdf \\",
         "  -pass file:master.key"
       ]
     },
     {
-      "tool": "GPG Symmetric with Passphrase File",
-      "description_en": "Encrypt using GPG with --passphrase-file",
-      "description_hu": "Titkosítás GPG-vel --passphrase-file opcióval",
+      "tool": "GPG Symmetric with --passphrase-file",
+      "description_en": "Encrypt using GPG with passphrase file",
+      "description_hu": "GPG titkosítás passphrase-file opcióval",
       "commands": [
-        "# Encrypt:",
         "gpg --symmetric --cipher-algo AES256 \\",
         "  --passphrase-file master.key \\",
         "  --batch --yes \\",
-        "  -o secret.pdf.gpg secret.pdf",
-        "",
-        "# Decrypt:",
-        "gpg --decrypt \\",
-        "  --passphrase-file master.key \\",
-        "  --batch \\",
-        "  -o secret.pdf secret.pdf.gpg"
+        "  -o secret.pdf.gpg secret.pdf"
       ]
     },
     {
       "tool": "LUKS Full Disk Encryption",
-      "description_en": "Add keyfile to LUKS for fast unlocking",
-      "description_hu": "Kulcsfájl hozzáadása LUKS-hoz gyors feloldásért",
+      "description_en": "Add keyfile to LUKS",
+      "description_hu": "Kulcsfájl LUKS-hoz",
       "commands": [
-        "# Add keyfile to existing LUKS partition:",
         "sudo cryptsetup luksAddKey /dev/sda1 master.key",
-        "",
-        "# Open with keyfile (no password prompt):",
-        "sudo cryptsetup luksOpen /dev/sda1 crypt \\",
-        "  --key-file master.key"
+        "sudo cryptsetup luksOpen /dev/sda1 crypt --key-file master.key"
       ]
     }
   ],
   "best_practices": [
     {
-      "en": "Generate a fresh 4096-char password monthly",
-      "hu": "Havonta generálj friss 4096 karakteres jelszót"
+      "en": "Generate fresh 4096-char password monthly",
+      "hu": "Havonta generálj frisset"
     },
     {
-      "en": "Store the keyfile on an encrypted USB drive",
-      "hu": "Tárold a kulcsfájlt titkosított USB-n"
+      "en": "Store on encrypted USB drive",
+      "hu": "Tárold titkosított USB-n"
     },
     {
-      "en": "Never transmit the keyfile over network",
-      "hu": "Soha ne küldd a kulcsfájlt hálózaton"
+      "en": "Never transmit over network",
+      "hu": "Soha ne küldd hálózaton"
     },
     {
       "en": "Use different keyfiles for different purposes",
-      "hu": "Használj különböző kulcsfájlokat"
+      "hu": "Különböző célokra különböző fájlok"
     },
     {
       "en": "Backup in multiple secure locations",
