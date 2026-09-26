@@ -6,6 +6,61 @@
 
 (function() {
   const WORKER = "https://secure-password-generator.boldwelderwx.workers.dev";
+
+  // ─── Toast notification (replaces alert) ───────────
+  function showToast(msg, cmd, isError) {
+    // Remove existing toasts
+    document.querySelectorAll('.spg-toast').forEach(t => t.remove());
+    
+    const toast = document.createElement('div');
+    toast.className = 'spg-toast' + (isError ? ' error' : '');
+    toast.innerHTML = msg + (cmd ? `<span class="toast-cmd">${cmd}</span>` : '');
+    document.body.appendChild(toast);
+    
+    // Show with animation
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => toast.classList.add('show'));
+    });
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 5000);
+  }
+  
+  // ─── Copy to clipboard (with fallback) ─────────────
+  async function copyToClipboard(text) {
+    // Try modern Clipboard API first
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch (e) {
+      console.warn('Clipboard API failed, trying fallback:', e);
+    }
+    
+    // Fallback: textarea + execCommand (works everywhere)
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      ta.style.top = '0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) {
+      console.error('Fallback copy failed:', e);
+      return false;
+    }
+  }
+
+
   
   // ─── Content sections (HTML strings) ───────────────
   const sections = {
@@ -418,29 +473,23 @@ gpg --verify downloaded-file.sig downloaded-file</code></pre>
   }
   
   async function copyPreset(name) {
-    const cmd = `curl --tlsv1.3 --compressed ${WORKER}/preset/${name} -o ` + name + '_' + new Date().toISOString().replace(/[-:T]/g,'').slice(0,15) + `.csv`;
-    const msg = `📋 Command copied!
-
-${cmd}
-
-📝 What to do:
-1. Open your console (see Beginner Guide above)
-2. Paste this command (Ctrl+V or Cmd+V)
-3. Press Enter
-4. The file "` + name + '_' + new Date().toISOString().replace(/[-:T]/g,'').slice(0,15) + `.csv" downloads to your current folder
-
-💡 The CSV uses column layout (max 5000 rows, passwords only).
-   Open in Excel/LibreOffice - it works perfectly!`;
+    const cmd = `curl --tlsv1.3 -OJ "${WORKER}/preset/${name}"`;
+    const copied = await copyToClipboard(cmd);
     
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(cmd);
-        alert(msg);
-      } else {
-        prompt('Copy this command:', cmd);
-      }
-    } catch {
-      prompt('Copy this command:', cmd);
+    if (copied) {
+      showToast(
+        '✅ <strong>Command copied!</strong><br>Paste it in your console (Ctrl+V) and press Enter.<br>The file downloads with a unique timestamp name.',
+        cmd,
+        false
+      );
+    } else {
+      showToast(
+        '⚠️ <strong>Copy failed</strong> - select and copy manually:',
+        cmd,
+        true
+      );
+      // Also show prompt as last resort
+      prompt('Copy this command manually:', cmd);
     }
   }
   
