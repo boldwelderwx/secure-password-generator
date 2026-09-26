@@ -74,6 +74,21 @@ a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 @media (max-width:480px){.hero{padding:3rem 0 1.5rem}.hero-cta{flex-direction:column;align-items:stretch}.btn{width:100%;justify-content:center}}
+
+/* ═══ FIX v8: Lang menu EXPLICIT colors (critical CSS) ═══ */
+.lang-menu{background:#ffffff!important;border:1px solid #cbd5e1!important}
+.lang-menu button{color:#1e293b!important;background:transparent!important}
+.lang-menu button:hover{background:#f1f5f9!important;color:#6366f1!important}
+.lang-menu button.current{background:#6366f1!important;color:#fff!important}
+[data-theme="dark"] .lang-menu{background:#1e293b!important;border-color:#475569!important}
+[data-theme="dark"] .lang-menu button{color:#e2e8f0!important}
+[data-theme="dark"] .lang-menu button:hover{background:#334155!important;color:#a5b4fc!important}
+[data-theme="dark"] .lang-menu button.current{background:#6366f1!important;color:#fff!important}
+/* ═══ FIX v8: Beta badge ═══ */
+.beta-badge{display:inline-block;font-size:.35em;font-weight:500;color:var(--txt2);opacity:.65;background:var(--bg2);border:1px solid var(--brd);padding:.2em .7em;border-radius:1em;margin-left:.5em;vertical-align:middle;letter-spacing:.05em;white-space:nowrap}
+/* ═══ FIX v8: Disclaimer footer ═══ */
+.footer-disclaimer{margin-top:1.5rem;padding:1rem;background:rgba(245,158,11,.08);border:1px solid var(--warn);border-radius:.5rem;font-size:.78rem;line-height:1.6;color:var(--txt2)}
+.footer-disclaimer strong{color:var(--warn)}
 </style>
 
 <!-- Load full stylesheet async (progressive loading) -->
@@ -150,6 +165,7 @@ a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
     <h1 class="hero-title">
       <span data-i18n="title_1">Secure Password</span>
       <span class="gradient-text" data-i18n="title_2">Database Generator</span>
+      <span class="beta-badge">beta v0.1 — under development / fejlesztés alatt</span>
     </h1>
     <p class="hero-subtitle" data-i18n="subtitle">
       Professional cryptographic tool for security researchers and privacy advocates.

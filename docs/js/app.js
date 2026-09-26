@@ -425,7 +425,8 @@ gpg --verify downloaded-file.sig downloaded-file</code></pre>
     });
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const data = await r.json();
-      renderPresets(data.presets || [], grid, filter);
+      const presets = Array.isArray(data) ? data : (data.presets || []);
+      renderPresets(presets, grid, filter);
     } catch (e) {
       grid.innerHTML = '<div class="tip-box">⚠️ Failed to load presets. Check internet.</div>';
     }

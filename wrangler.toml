@@ -10,3 +10,6 @@ MAX_PASSWORDS_PER_REQUEST = 100000
 MAX_PASSWORD_LENGTH = 4096
 DEFAULT_PASSWORD_LENGTH = 32
 DEFAULT_COUNT = 10000
+
+# Cloudflare Pages configuration (docs site)
+pages_build_output_dir = "docs"

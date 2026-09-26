@@ -114,7 +114,7 @@ function handlePresetList(request) {
   }
   
   // JSON by default (fixes "Failed to load presets" bug)
-  return new Response(JSON.stringify(list, null, 2), {
+  return new Response(JSON.stringify({ version: '2.0.0', total: list.length, presets: list }, null, 2), {
     headers: { ...BASE_HEADERS, 'Content-Type': 'application/json' }
   });
 }
