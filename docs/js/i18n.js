@@ -149,7 +149,7 @@
       }
       
       try {
-        const response = await fetch(`i18n/${lang}.json`, { cache: 'force-cache' });
+        const response = await fetch(`i18n/${lang}.json?v=5`, { cache: 'no-store' });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
         this.translations = data;

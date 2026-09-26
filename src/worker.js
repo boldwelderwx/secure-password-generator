@@ -101,17 +101,21 @@ function handleHealth() {
 }
 
 function handlePresetList(request) {
-  const accept = request.headers.get('Accept') || '';
   const list = listPresets();
+  const url = new URL(request.url);
+  const format = url.searchParams.get('format');
   
-  if (accept.includes('application/json')) {
-    return new Response(JSON.stringify(list, null, 2), {
-      headers: { ...BASE_HEADERS, 'Content-Type': 'application/json' }
+  // TEXT format only if explicitly requested via ?format=text
+  // DEFAULT is JSON (browsers expect JSON from fetch)
+  if (format === 'text') {
+    return new Response(generatePresetList(), {
+      headers: { ...BASE_HEADERS, 'Content-Type': 'text/plain; charset=utf-8' }
     });
   }
   
-  return new Response(generatePresetList(), {
-    headers: { ...BASE_HEADERS, 'Content-Type': 'text/plain; charset=utf-8' }
+  // JSON by default (fixes "Failed to load presets" bug)
+  return new Response(JSON.stringify(list, null, 2), {
+    headers: { ...BASE_HEADERS, 'Content-Type': 'application/json' }
   });
 }
 
@@ -143,7 +147,7 @@ function handlePresetDownload(presetName, url) {
       headers: {
         ...BASE_HEADERS,
         'Content-Type': 'text/csv; charset=utf-8',
-        'Content-Disposition': `attachment; filename="${presetName}_passwords.csv"`,
+        'Content-Disposition': `attachment; filename="${presetName}_${new Date().toISOString().replace(/[-:T]/g, '').slice(0, 15)}.csv"`,
         'X-Preset': presetName,
         'X-Password-Length': String(length),
         'X-Password-Count': String(count),

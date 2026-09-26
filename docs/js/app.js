@@ -364,7 +364,11 @@ gpg --verify downloaded-file.sig downloaded-file</code></pre>
     if (!grid || !filter) return;
     
     try {
-      const r = await fetch(`${WORKER}/presets`);
+      const r = await fetch(`${WORKER}/presets`, {
+      headers: { 'Accept': 'application/json' },
+      cache: 'no-store'
+    });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const data = await r.json();
       renderPresets(data.presets || [], grid, filter);
     } catch (e) {
@@ -724,25 +728,25 @@ stegsnow -C -p "key" output.txt` }
     loadPresets();
     renderCrypto();
     renderSteg();
-    loadJSON('content/open-password-handling.json', renderOpenHandling);
-    loadJSON('content/boldwelder-recommendations.json', renderBoldwelder);
-    loadJSON('content/sarah-tim.json', renderSarahTim);
-    loadJSON('content/kyber.json', renderKyber);
-    loadJSON('content/email-providers.json', renderEmailProviders);
-    loadJSON('content/tor-guide.json', renderAnonymity);
-    loadJSON('content/tor-guide.json', d => renderTextBrowsers(d));
+    loadJSON('content/open-password-handling.json?v=5', renderOpenHandling);
+    loadJSON('content/boldwelder-recommendations.json?v=5', renderBoldwelder);
+    loadJSON('content/sarah-tim.json?v=5', renderSarahTim);
+    loadJSON('content/kyber.json?v=5', renderKyber);
+    loadJSON('content/email-providers.json?v=5', renderEmailProviders);
+    loadJSON('content/tor-guide.json?v=5', renderAnonymity);
+    loadJSON('content/tor-guide.json?v=5', d => renderTextBrowsers(d));
     setupTabs();
     setupSmoothScroll();
     console.log('✅ App v4.0 initialized');
   });
   
   window.addEventListener('languageChanged', () => {
-    loadJSON('content/open-password-handling.json', renderOpenHandling);
-    loadJSON('content/boldwelder-recommendations.json', renderBoldwelder);
-    loadJSON('content/sarah-tim.json', renderSarahTim);
-    loadJSON('content/kyber.json', renderKyber);
-    loadJSON('content/email-providers.json', renderEmailProviders);
-    loadJSON('content/tor-guide.json', renderAnonymity);
-    loadJSON('content/tor-guide.json', d => renderTextBrowsers(d));
+    loadJSON('content/open-password-handling.json?v=5', renderOpenHandling);
+    loadJSON('content/boldwelder-recommendations.json?v=5', renderBoldwelder);
+    loadJSON('content/sarah-tim.json?v=5', renderSarahTim);
+    loadJSON('content/kyber.json?v=5', renderKyber);
+    loadJSON('content/email-providers.json?v=5', renderEmailProviders);
+    loadJSON('content/tor-guide.json?v=5', renderAnonymity);
+    loadJSON('content/tor-guide.json?v=5', d => renderTextBrowsers(d));
   });
 })();

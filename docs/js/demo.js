@@ -26,7 +26,8 @@
       // Use new /sample/ endpoint - returns just 10 passwords, one per line
       const response = await fetch(`${WORKER}/sample/${presetName}`, {
         signal: controller.signal,
-        headers: { 'Accept': 'text/plain' }
+        headers: { 'Accept': 'text/plain' },
+        cache: 'no-store'
       });
       
       clearTimeout(timeout);
@@ -47,7 +48,7 @@
         `<span style="color:#64748b">// 🎯 Sample: 10 random passwords</span>\n\n` +
         display +
         `\n\n<span style="color:#64748b">// 💡 To download the full database to your computer:</span>\n` +
-        `<span style="color:#fbbf24">curl --compressed ${WORKER}/preset/${presetName} -o passwords.csv</span>\n\n` +
+        `<span style="color:#fbbf24">curl -OJ "${WORKER}/preset/${presetName}"</span>\n\n` +
         `<span style="color:#64748b">// The CSV uses column layout (max 5000 rows, passwords only).</span>\n` +
         `<span style="color:#64748b">// Open in Excel/LibreOffice - it just works!</span>`;
         
@@ -56,7 +57,7 @@
       output.innerHTML = 
         `<span style="color:#ef4444">❌ Error: ${msg}</span>\n\n` +
         `<span style="color:#64748b">Try running curl directly in your console:</span>\n` +
-        `<span style="color:#fbbf24">curl ${WORKER}/preset/${presetName} -o passwords.csv</span>`;
+        `<span style="color:#fbbf24">curl -OJ "${WORKER}/preset/${presetName}"</span>`;
     } finally {
       btn.disabled = false;
       btn.textContent = 'Generate 10 Sample Passwords';
